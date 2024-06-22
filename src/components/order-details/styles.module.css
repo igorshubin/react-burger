@@ -1,0 +1,29 @@
+
+.order-details {
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.order-details--id {
+
+}
+.order-details--title {
+
+}
+.order-details--icon {
+    margin-left: auto;
+    margin-right: auto;
+    width: 122px;
+    height: 122px;
+}
+.order-details--text {
+    color: var(--text-primary-color);
+}
+
+@media (max-width: 767px) {
+    .text_type_digits-large {
+        font-size: 80px !important;
+    }
+}

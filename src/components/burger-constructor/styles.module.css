@@ -1,0 +1,19 @@
+
+.bc {
+    flex: 1;
+    flex-shrink: 0;
+}
+
+.bc--empty {
+    color: var(--text-inactive-color);
+    font-size: 12px;
+    padding-top: calc(var(--offset-base-size) * 3);
+    text-align: center;
+}
+
+@media (max-width: 1240px) {
+    .bc {
+        margin: 40px 0 0 0;
+        width: 100%;
+    }
+}

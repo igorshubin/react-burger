@@ -1,0 +1,19 @@
+
+.constructor-total {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+
+@media (max-width: 767px) {
+    .constructor-total {
+        flex-flow: column;
+        align-items: flex-end;
+    }
+
+    .constructor-total--money {
+        margin-bottom: calc(var(--offset-base-size) * 3);
+    }
+}
