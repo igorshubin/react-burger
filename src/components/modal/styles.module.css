@@ -1,0 +1,50 @@
+
+.modal--overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal {
+    display: flex;
+    flex-flow: column;
+    background: var(--background);
+    width: 640px;
+    max-width: 85%;
+    border-radius: 40px;
+    position: fixed;
+    top: 10vh;
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: 10;
+}
+
+.modal--header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: calc(var(--offset-base-size) * 3);
+    min-height: 40px;
+}
+
+.modal--body {
+
+}
+
+@media (max-width: 1024px) {
+    .modal {
+        top: 10vh;
+    }
+}
+
+@media (max-width: 767px) {
+    .modal {
+        top: 10%;
+        padding: calc(var(--offset-base-size) * 4);
+    }
+}

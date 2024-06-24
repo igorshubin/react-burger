@@ -11,3 +11,48 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+html,
+body,
+#root {
+  display: flex;
+  flex-flow: column;
+  flex: 1;
+  min-height: 100%;
+}
+
+
+svg {
+  flex-shrink: 0;
+}
+
+@media (max-width: 767px) {
+  .tabs-mobile .tab {
+    min-width: 0;
+    padding-left: 0;
+    padding-right: 0;
+    flex: 1;
+  }
+
+  .text_type_digits-large {
+    font-size: 80px !important;
+  }
+
+  .constructor-element.constructor-element_mobile {
+    padding: 8px;
+    min-height: 0;
+    font-size: 14px;
+  }
+
+  .constructor-element .constructor-element__image {
+    width: 60px;
+    margin: 0;
+  }
+  .constructor-element .constructor-element__text {
+    margin-right: 10px;
+    line-height: 1.2;
+    word-break: break-word;
+  }
+}
+
+

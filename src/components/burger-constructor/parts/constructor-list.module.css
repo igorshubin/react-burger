@@ -1,0 +1,35 @@
+
+.constructor-list {
+    max-height: calc(100vh - 325px);
+    display: flex;
+    flex-flow: column;
+}
+
+.constructor-list--root {
+    flex: 1;
+    overflow: auto;
+    scrollbar-width: thin;
+}
+
+.constructor-list--item {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.constructor-list--drag {
+    cursor: grab;
+}
+
+
+@media (max-width: 767px) {
+    .constructor-list {
+        max-height: 100%;
+    }
+
+    .constructor-list--top,
+    .constructor-list--bottom {
+        margin-left: 0;
+        padding-left: 0;
+    }
+}

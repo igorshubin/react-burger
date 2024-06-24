@@ -1,0 +1,52 @@
+
+
+.ingredient {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: column;
+    position: relative;
+    flex: 1;
+    cursor: pointer;
+}
+.ingredient_hidden {
+    display: none;
+}
+
+.ingredient--img {
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ingredient--price {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ingredient--title {
+    height: 50px;
+    text-align: center;
+}
+
+.ingredient--count {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+@media (max-width: 767px) {
+    .ingredient {
+        margin-bottom: 10px;
+    }
+
+    .ingredient--img {
+        height: 70px;
+    }
+
+    .ingredient--title {
+        height: auto;
+    }
+}

@@ -1,0 +1,23 @@
+.error-boundary {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  max-width: 500px;
+  margin: 30px auto 20px;
+}
+
+.error-boundary--title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.error-boundary--content {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.error-boundary--button {
+  box-shadow: none;
+  max-width: 350px;
+}

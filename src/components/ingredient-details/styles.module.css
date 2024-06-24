@@ -1,0 +1,44 @@
+
+.ingredient-details {
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.ingredient-details--image {
+    min-height: 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.ingredient-details--title {
+    text-align: center;
+}
+.ingredient-details--stats {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: calc(var(--offset-base-size) * 5);
+
+    flex-wrap: wrap;
+}
+.ingredient-details--stat {
+    flex: 1;
+    display: flex;
+    flex-flow: column;
+    text-align: center;
+    color: var(--text-inactive-color);
+}
+.ingredient-details--stat-name {
+    white-space: nowrap;
+    margin-bottom: calc(var(--offset-base-size) * 2);
+}
+@media (max-width: 767px) {
+    .ingredient-details--image {
+        min-height: 140px;
+    }
+
+    .ingredient-details--stat {
+        flex: 1 0 45%;
+        white-space: nowrap;
+    }
+}
