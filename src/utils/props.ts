@@ -1,10 +1,7 @@
 
-
-
 export interface ConstructorListProps {
-  top: IngredientItemProps|null,
-  bottom: IngredientItemProps|null,
-  list: IngredientItemProps[]|null,
+  bun: IngredientItemProps|null,
+  ingredients: IngredientItemProps[]|null,
 }
 
 export interface ConstructorTotalProps {
@@ -20,18 +17,6 @@ export interface ModalOverlayProps {
   modalClose: () => void,
 }
 
-export const DataDefault = {
-  success: false,
-  count: 0,
-  data: [],
-};
-
-export interface DataProps {
-  success: boolean,
-  count: number,
-  data: IngredientItemProps[],
-}
-
 export interface OrderDetailsProps {
   orderId: number|null
 }
@@ -39,7 +24,6 @@ export interface OrderDetailsProps {
 export interface IngredientProps {
   data: IngredientItemProps,
   onClick?: () => void,
-  visible?: boolean,
   count?: number,
 }
 
@@ -48,6 +32,7 @@ export interface IngredientDetailsProps {
 }
 
 export interface IngredientItemProps {
+  id?: string,
   _id: string,
   name: string,
   type: string,

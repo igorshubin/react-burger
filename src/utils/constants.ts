@@ -1,8 +1,9 @@
 
+
 export const APIURL = 'https://norma.nomoreparties.space/api/ingredients';
 
 /**
- * Default selected tab & also ingredient.type for top/bottom
+ * ingredient.type for top/bottom
  */
 export const TYPEDEFAULT = 'bun';
 
@@ -27,4 +28,3 @@ export enum INGRSTATS {
   fat = 'Жиры, г',
   carbohydrates = 'Углеводы, г',
 }
-
