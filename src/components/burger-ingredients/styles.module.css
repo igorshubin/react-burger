@@ -22,10 +22,12 @@
     max-height: calc(100vh - 320px);
     overflow: auto;
     scrollbar-width: thin;
+
+    /*border: solid blue;*/
 }
 
 .bi--content {
-
+    /*border: solid red;*/
 }
 .bi--content-title {
 

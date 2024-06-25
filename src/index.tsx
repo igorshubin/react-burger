@@ -1,18 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import {Provider} from 'react-redux';
+import reportWebVitals from './reportWebVitals';
+import ErrorBoundary from './components/error-boundary/error-boundary';
 import "normalize.css";
 import './index.css';
 import App from './components/app';
-import reportWebVitals from './reportWebVitals';
-import ErrorBoundary from './components/error-boundary/error-boundary';
+import {store} from "./services/redux";
 
-const root = ReactDOM.createRoot(
+ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
-);
-root.render(
+).render(
   <React.StrictMode>
     <ErrorBoundary>
-      <App />
+      <Provider store={store}>
+        <App />
+      </Provider>
     </ErrorBoundary>
   </React.StrictMode>
 );

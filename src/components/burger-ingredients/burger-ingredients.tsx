@@ -1,22 +1,62 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useRef, useState} from 'react';
+import {shallowEqual} from 'react-redux';
 import s from './styles.module.css';
 import clsx from 'clsx';
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import {TYPEDEFAULT, TYPES} from '../../utils/constants';
 import Ingredient from './parts/ingredient';
-import {DataProps, IngredientItemProps} from '../../utils/props';
+import {IngredientItemProps} from '../../utils/props';
 import IngredientDetails from '../ingredient-details';
 import Modal from '../modal';
+import {getOrderCounts} from '../../utils/utils';
+import {popupShow} from '../../services/redux/popup-slice';
+import {useAppDispatch, useAppSelector} from '../../hooks';
 
-interface BurgerIngredientsProps {
-  apiData: DataProps;
-}
+const BurgerIngredients: FC = () => {
+  const dispatch = useAppDispatch();
+  const {apiData, orderData, popupData} = useAppSelector(
+    state => ({
+      apiData: state.server.data,
+      orderData: state.order,
+      popupData: state.popup,
+    }),
+    shallowEqual
+  );
 
-const BurgerIngredients: FC<BurgerIngredientsProps> = ({apiData}) => {
   const [activeTab, setActiveTab] = useState<string>(TYPEDEFAULT);
-  const [modalData, setModalData] = useState<IngredientItemProps|null>(null);
+  const [counts, setCounts] = useState<any>({});
 
-  const handleTabClick = (value:string) => setActiveTab(value);
+  const refs = useRef<any>({});
+
+  useEffect(() => setCounts(getOrderCounts(orderData)), [orderData]);
+
+  const showModal = (item:IngredientItemProps) => {
+    dispatch(popupShow({
+      data: item,
+      title: 'Детали ингредиента',
+    }));
+  }
+
+  // activate tab by nearest content, use getBoundingClientRect
+  const handleScroll = (e: React.UIEvent<HTMLElement>): void => {
+    const parentTop = e.currentTarget.getBoundingClientRect().top;
+
+    Object.entries(TYPES).map(([id, name]) => {
+      const childTop = parseInt(refs.current[id].getBoundingClientRect().top);
+      const childTopFix = childTop - parentTop;
+
+      if (childTopFix < 50 && childTopFix > -60) {
+        setActiveTab(id);
+      }
+
+      return null;
+    });
+  };
+
+  const handleTabClick = (value:string) => {
+    setActiveTab(value);
+    refs.current[value].scrollIntoView({behavior: 'smooth', block: 'start', inline: 'nearest'});
+  };
 
   return(
     <section className={clsx(s['bi'], 'pt-10')}>
@@ -26,12 +66,12 @@ const BurgerIngredients: FC<BurgerIngredientsProps> = ({apiData}) => {
       </div>
 
       {/* TABS */}
-      <nav className={clsx(s['bi--tabs'], 'mb-10', 'tabs-mobile')}>
+      <nav className={clsx(s['bi--tabs'], 'tabs-mobile')}>
         {
-          TYPES.map((item, k) => {
+          Object.entries(TYPES).map(([id, name]) => {
             return (
-              <Tab key={k} active={activeTab === item.id} value={item.id} onClick={handleTabClick}>
-                {item.name}
+              <Tab key={id} active={activeTab === id} value={id} onClick={handleTabClick}>
+                {name}
               </Tab>
             )
           })
@@ -39,15 +79,15 @@ const BurgerIngredients: FC<BurgerIngredientsProps> = ({apiData}) => {
       </nav>
 
       {/* TITLES & LISTS */}
-      <div className={clsx(s['bi--root'])}>
+      <div onScroll={handleScroll} className={clsx(s['bi--root'], 'mt-10')}>
         {
-          TYPES.map((type, key) => {
-            const list = apiData.data.filter((i:IngredientItemProps) => i.type === type.id);
+          Object.entries(TYPES).map(([id, name]) => {
+            const list = apiData.filter((i:IngredientItemProps) => i.type === id);
 
             return (
-              <div key={key} className={clsx(s['bi--content'], {[s['bi_hidden']]: type.id !== activeTab})}>
+              <div key={id} ref={el => refs.current[id] = el} className={s['bi--content']}>
                 <div className={clsx(s['bi--content-title'], 'text', 'text_type_main-medium', 'mb-6')}>
-                  {type.name}
+                  {name}
                 </div>
 
                 {list.length? (
@@ -56,13 +96,14 @@ const BurgerIngredients: FC<BurgerIngredientsProps> = ({apiData}) => {
                       list.map((item:IngredientItemProps) =>
                         <Ingredient
                           key={item._id}
+                          count={counts[item._id] ?? 0}
                           data={item}
-                          onClick={() => setModalData(item)}
+                          onClick={() => showModal(item)}
                         />)
                     }
                   </div>
                 ) : (
-                  <div className={s['bi--content-empty']}>
+                  <div className={clsx(s['bi--content-empty'], 'mb-6')}>
                     Не найдено ингредиентов.
                   </div>
                 )}
@@ -73,9 +114,9 @@ const BurgerIngredients: FC<BurgerIngredientsProps> = ({apiData}) => {
       </div>
 
       {/* INGREDIENT MODAL */}
-      {modalData &&
-        <Modal modalClose={() => setModalData(null)} title={'Детали ингредиента'}>
-          <IngredientDetails data={modalData} />
+      {popupData.data &&
+        <Modal>
+          <IngredientDetails data={popupData.data} />
         </Modal>
       }
     </section>

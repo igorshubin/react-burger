@@ -1,25 +1,20 @@
 
-export const APIURL = 'https://norma.nomoreparties.space/api/ingredients';
+
+export const APIURL = 'https://norma.nomoreparties.space/api';
+
+export const TYPEDROP = 'ingredient';
+export const TYPESORT = 'sortable';
 
 /**
- * Default selected tab & also ingredient.type for top/bottom
+ * ingredient.type for top/bottom
  */
 export const TYPEDEFAULT = 'bun';
 
-export const TYPES = [
-  {
-    id: 'bun',
-    name: 'Булки',
-  },
-  {
-    id: 'sauce',
-    name: 'Соусы',
-  },
-  {
-    id: 'main',
-    name: 'Начинки',
-  },
-];
+export enum TYPES {
+  bun = 'Булки',
+  sauce = 'Соусы',
+  main = 'Начинки',
+}
 
 export enum INGRSTATS {
   calories = 'Калории, ккал',
@@ -27,4 +22,3 @@ export enum INGRSTATS {
   fat = 'Жиры, г',
   carbohydrates = 'Углеводы, г',
 }
-

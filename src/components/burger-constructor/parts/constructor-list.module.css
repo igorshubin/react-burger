@@ -4,6 +4,10 @@
     display: flex;
     flex-flow: column;
 }
+.constructor-list_drag-over {
+    box-shadow: 0 0 0 1px var(--text-inactive-color);
+    border-radius: 12px;
+}
 
 .constructor-list--root {
     flex: 1;
