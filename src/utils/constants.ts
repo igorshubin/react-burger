@@ -2,6 +2,8 @@
 
 export const APIURL = 'https://norma.nomoreparties.space/api/ingredients';
 
+export const TYPEDROP = 'ingredient';
+
 /**
  * ingredient.type for top/bottom
  */
