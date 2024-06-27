@@ -1,36 +1,46 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC} from 'react';
 import s from './ingredient.module.css';
 import clsx from 'clsx';
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import {IngredientProps} from '../../../utils/props';
 import {isMobileDevice} from '../../../utils/device';
+import {useDispatch} from 'react-redux';
+import {ACTIONS} from '../../../redux/store';
+import {TYPEDEFAULT} from '../../../utils/constants';
+import { v4 as uuidv4 } from 'uuid';
 
 const Ingredient: FC<IngredientProps> = ({
   data,
-  count = 1,
-  visible = true,
+  count = 0,
   onClick
 }) => {
-  const [hasCount, setHasCount] = useState(count);
-  const [isVisible, setIsVisible] = useState(visible);
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    setIsVisible(visible)
-  }, [visible]);
+  /**
+   * Add item to order (& render element in construstor)
+   * TODO: refactor to dragAndrop
+   */
+  const orderAdd = (e:React.UIEvent<HTMLElement>) => {
+    e.stopPropagation();
+    e.preventDefault();
 
-  useEffect(() => {
-    setHasCount(count)
-  }, [count]);
+    if (data.type === TYPEDEFAULT) {
+      dispatch({type: ACTIONS.ORDER_ADD_BUN, payload: data});
+    } else {
+      // save with random id
+      dispatch({type: ACTIONS.ORDER_ADD_INGREDIENT, payload: {...data, id: uuidv4()}});
+    }
+  }
 
   return (
-      <div onClick={onClick} className={clsx(s['ingredient'], 'mb-8', {[s['ingredient_hidden']]: !isVisible})}>
-        <Counter count={hasCount} extraClass={s['ingredient--count']}/>
+      <div onClick={onClick} className={clsx(s['ingredient'], 'mb-8')}>
+        {count ? <Counter count={count} extraClass={s['ingredient--count']}/> : ''}
 
         <div className={s['ingredient--img']}>
           <img src={isMobileDevice()? data.image_mobile : data.image} alt={data.name}/>
         </div>
 
-        <div className={clsx(s['ingredient--price'], 'p-1', 'text', 'text_type_digits-default')}>
+        <div onClick={(e) => orderAdd(e)} className={clsx(s['ingredient--price'], 'p-1', 'text', 'text_type_digits-default')}>
           <span className='mr-1'>
             {data.price}
           </span>

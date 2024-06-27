@@ -1,4 +1,6 @@
 import React, {FC, useState} from 'react';
+import {useSelector} from 'react-redux';
+import {DataProps} from '../../../redux/store';
 import s from './constructor-total.module.css';
 import clsx from 'clsx';
 import {Button, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
@@ -6,16 +8,25 @@ import {isMobileDevice} from '../../../utils/device';
 import {ConstructorTotalProps} from '../../../utils/props';
 import OrderDetails from '../../order-details';
 import Modal from '../../modal';
+import {checkOrderValid} from '../../../utils/utils';
 
 const ConstructorTotal: FC<ConstructorTotalProps> = ({total}) => {
+  const orderData = useSelector((state:DataProps) => state.order);
   const [showModal, setShowModal] = useState(false);
   const [orderId, setOrderId] = useState<number|null>(null);
 
   // TODO: create order & pass orderId to modal
   const createOrder = () => {
-    console.log('handleCreateOrder');
+    console.warn('createOrder', orderData);
+
+    const error = checkOrderValid(orderData);
+    if (error) {
+      alert(error);
+      return false;
+    }
 
     setOrderId(123456);
+
     setShowModal(true);
   }
 

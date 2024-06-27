@@ -1,10 +1,11 @@
 import React, {FC, useEffect, useState} from 'react';
+import {useDispatch} from 'react-redux';
 import s from "./styles.module.css";
 import AppHeader from '../app-header';
 import BurgerIngredients from '../burger-ingredients';
 import BurgerConstructor from '../burger-constructor';
-import {DataDefault, DataProps} from '../../utils/props';
 import {APIURL} from '../../utils/constants';
+import {ACTIONS} from '../../redux/store';
 import {Button} from '@ya.praktikum/react-developer-burger-ui-components';
 
 /**
@@ -14,8 +15,9 @@ import {Button} from '@ya.praktikum/react-developer-burger-ui-components';
  */
 
 const App: FC = () => {
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<DataProps>(DataDefault);
+  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     const getData = async () => {
@@ -26,19 +28,19 @@ const App: FC = () => {
           }
           return Promise.reject(res);
         })
-        .then(data => setData({
-          ...data,
-          count: data.data.length
-        }))
+        .then(data => {
+          dispatch({type: ACTIONS.DATA_SERVER, payload: data});
+          setSuccess(true);
+        })
         .catch(e => {
           console.error('Ошибка API:', e);
-          setData(DataDefault);
-        });
+          dispatch({type: ACTIONS.DATA_DEFAULT})
+        })
+        .finally(() => setLoading(false));
     }
 
-    getData()
-      .finally(() => setLoading(false));
-  }, []);
+    getData();
+  }, [dispatch]);
 
   return (
     <div className={s['app']}>
@@ -51,7 +53,7 @@ const App: FC = () => {
           </div>
         }
         {
-          !loading && !data.success && <div className={s['app-error']}>
+          !loading && !success && <div className={s['app-error']}>
             Ошибка получения данных!
             <Button type={'secondary'} htmlType={'reset'} onClick={() => window.location.reload()}>
               Перегрузить страницу
@@ -59,10 +61,10 @@ const App: FC = () => {
           </div>
         }
         {
-          !loading && data.success &&
+          !loading && success &&
             <>
-              <BurgerIngredients apiData={data} />
-              <BurgerConstructor apiData={data} />
+              <BurgerIngredients/>
+              <BurgerConstructor/>
             </>
         }
       </main>

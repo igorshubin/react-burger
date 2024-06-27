@@ -1,22 +1,48 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useRef, useState} from 'react';
+import {useSelector} from 'react-redux';
 import s from './styles.module.css';
 import clsx from 'clsx';
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import {TYPEDEFAULT, TYPES} from '../../utils/constants';
 import Ingredient from './parts/ingredient';
-import {DataProps, IngredientItemProps} from '../../utils/props';
+import {IngredientItemProps} from '../../utils/props';
+import {DataProps} from '../../redux/store';
 import IngredientDetails from '../ingredient-details';
 import Modal from '../modal';
+import {getOrderCounts} from '../../utils/utils';
 
 interface BurgerIngredientsProps {
-  apiData: DataProps;
 }
 
-const BurgerIngredients: FC<BurgerIngredientsProps> = ({apiData}) => {
+const BurgerIngredients: FC<BurgerIngredientsProps> = () => {
+  const apiData = useSelector((state:DataProps) => state.server.data);
+  const orderData = useSelector((state:DataProps) => state.order);
   const [activeTab, setActiveTab] = useState<string>(TYPEDEFAULT);
+  const [counts, setCounts] = useState<any>({});
   const [modalData, setModalData] = useState<IngredientItemProps|null>(null);
+  const refs = useRef<any>({});
 
-  const handleTabClick = (value:string) => setActiveTab(value);
+  useEffect(() => setCounts(getOrderCounts(orderData)), [orderData]);
+
+  /**
+   * TODO:
+   * activate tab by nearest content (refs.current[value]), use getBoundingClientRect
+   * refactor by docs: https://app.pachca.com/chats/9643197?message=267496633
+   * research: https://www.youtube.com/watch?v=ldgnmiPIftw&list=PL6DxKON1uLOHsBCJ_vVuvRsW84VnqmPp6&index=3
+   */
+  const handleScroll = (e: React.UIEvent<HTMLElement>): void => {
+/*    console.log({
+      event: e,
+      target: e.target,
+      currentTarget: e.currentTarget,
+      scrollTop: e.currentTarget.scrollTop,
+    });*/
+  };
+
+  const handleTabClick = (value:string) => {
+    setActiveTab(value);
+    refs.current[value].scrollIntoView({behavior: 'smooth', block: 'start', inline: 'nearest'});
+  };
 
   return(
     <section className={clsx(s['bi'], 'pt-10')}>
@@ -39,13 +65,13 @@ const BurgerIngredients: FC<BurgerIngredientsProps> = ({apiData}) => {
       </nav>
 
       {/* TITLES & LISTS */}
-      <div className={clsx(s['bi--root'])}>
+      <div onScroll={handleScroll} className={clsx(s['bi--root'])}>
         {
           TYPES.map((type, key) => {
-            const list = apiData.data.filter((i:IngredientItemProps) => i.type === type.id);
+            const list = apiData.filter((i:IngredientItemProps) => i.type === type.id);
 
             return (
-              <div key={key} className={clsx(s['bi--content'], {[s['bi_hidden']]: type.id !== activeTab})}>
+              <div key={key} ref={el => refs.current[type.id] = el} className={s['bi--content']}>
                 <div className={clsx(s['bi--content-title'], 'text', 'text_type_main-medium', 'mb-6')}>
                   {type.name}
                 </div>
@@ -56,13 +82,14 @@ const BurgerIngredients: FC<BurgerIngredientsProps> = ({apiData}) => {
                       list.map((item:IngredientItemProps) =>
                         <Ingredient
                           key={item._id}
+                          count={counts[item._id] ?? 0}
                           data={item}
                           onClick={() => setModalData(item)}
                         />)
                     }
                   </div>
                 ) : (
-                  <div className={s['bi--content-empty']}>
+                  <div className={clsx(s['bi--content-empty'], 'mb-6')}>
                     Не найдено ингредиентов.
                   </div>
                 )}
