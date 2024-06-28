@@ -3,6 +3,7 @@
 export const APIURL = 'https://norma.nomoreparties.space/api/ingredients';
 
 export const TYPEDROP = 'ingredient';
+export const TYPESORT = 'sortable';
 
 /**
  * ingredient.type for top/bottom

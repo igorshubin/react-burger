@@ -23,7 +23,7 @@ export const DataDefault = {
   order: {
     id: null,
     bun: null,
-    ingredients: null,
+    ingredients: [],
     success: false,
   }
 };
@@ -41,6 +41,6 @@ export interface DataServerProps {
 export interface DataOrderProps {
   id: string|null
   bun: IngredientItemProps|null,
-  ingredients: IngredientItemProps[]|null,
+  ingredients: IngredientItemProps[],
   success: boolean,
 }

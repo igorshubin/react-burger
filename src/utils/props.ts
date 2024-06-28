@@ -1,7 +1,14 @@
 
 export interface ConstructorListProps {
   bun: IngredientItemProps|null,
-  ingredients: IngredientItemProps[]|null,
+  ingredients: IngredientItemProps[],
+}
+
+export interface ConstructorCardProps {
+  id: string|undefined,
+  item: IngredientItemProps
+  index: number,
+  moveCard: (dragIndex: number, hoverIndex: number) => void
 }
 
 export interface ConstructorTotalProps {

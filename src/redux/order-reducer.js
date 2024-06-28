@@ -23,7 +23,7 @@ export const orderReducer = (state = DataDefault.order, action) => {
       const list = state.ingredients.filter((item) => item.id !== action.payload.id);
       return {
         ...state,
-        ingredients: list.length? [...list] : null
+        ingredients: list.length? [...list] : []
       };
     }
 
