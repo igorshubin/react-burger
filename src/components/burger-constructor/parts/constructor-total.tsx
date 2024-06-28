@@ -1,6 +1,6 @@
-import React, {FC, useState} from 'react';
-import {useSelector} from 'react-redux';
-import {DataProps} from '../../../redux/store';
+import React, {FC} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {ACTIONS, DataProps} from '../../../services/store';
 import s from './constructor-total.module.css';
 import clsx from 'clsx';
 import {Button, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
@@ -12,23 +12,37 @@ import {checkOrderValid} from '../../../utils/utils';
 
 const ConstructorTotal: FC<ConstructorTotalProps> = ({total}) => {
   const orderData = useSelector((state:DataProps) => state.order);
-  const [showModal, setShowModal] = useState(false);
-  const [invalidError, setInvalidError] = useState<string|null>(null);
-  const [orderId, setOrderId] = useState<number|null>(null);
+  const dispatch = useDispatch();
 
-  // TODO: create order & pass orderId to modal
+  // TODO: create order
   const createOrder = () => {
     console.warn('createOrder', orderData);
 
-    const error = checkOrderValid(orderData);
-    if (error) {
-      setInvalidError(error);
+    dispatch({type: ACTIONS.ORDER_INVALID_CLEAR});
+
+    const invalid = checkOrderValid(orderData);
+    if (invalid) {
+      dispatch({type: ACTIONS.ORDER_INVALID,
+        payload: {
+          invalid
+        }});
+      dispatch({type: ACTIONS.POPUP_SHOW, payload: {
+          title: invalid
+      }});
       return false;
     }
 
-    setOrderId(123456);
+    // TODO: here ajax order request
+    const orderId = 123456;
 
-    setShowModal(true);
+    if (orderId) {
+      dispatch({type: ACTIONS.ORDER_SAVE,
+        payload: {
+          success: true,
+          id: orderId,
+        }});
+      dispatch({type: ACTIONS.POPUP_SHOW});
+    }
   }
 
   return (
@@ -47,13 +61,13 @@ const ConstructorTotal: FC<ConstructorTotalProps> = ({total}) => {
       </div>
 
       {
-        showModal &&
-        <Modal modalClose={() => setShowModal(false)}>
-          <OrderDetails orderId={orderId} />
+        orderData.success && orderData.id &&
+        <Modal>
+          <OrderDetails orderId={orderData.id} />
         </Modal>
       }
       {
-        invalidError && <Modal title={invalidError} modalClose={() => setInvalidError(null)} />
+        orderData.invalid && <Modal />
       }
     </>
   );

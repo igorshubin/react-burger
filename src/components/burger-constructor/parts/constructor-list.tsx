@@ -5,7 +5,7 @@ import {ConstructorElement} from '@ya.praktikum/react-developer-burger-ui-compon
 import {ConstructorListProps, IngredientItemProps} from '../../../utils/props';
 import ConstructorEmpty from './constructor-empty';
 import {useDispatch} from 'react-redux';
-import {ACTIONS} from '../../../redux/store';
+import {ACTIONS} from '../../../services/store';
 import {isMobileDevice} from '../../../utils/device';
 import {useDrop} from 'react-dnd';
 import {TYPEDEFAULT, TYPEDROP} from '../../../utils/constants';
@@ -38,7 +38,10 @@ const ConstructorList: FC<ConstructorListProps> = ({bun, ingredients}) => {
       dispatch({type: ACTIONS.ORDER_ADD_BUN, payload: data});
     } else {
       // save with random id
-      dispatch({type: ACTIONS.ORDER_ADD_INGREDIENT, payload: {...data, id: uuidv4()}});
+      dispatch({type: ACTIONS.ORDER_ADD_INGREDIENT,
+        payload: {
+        ...data, id: uuidv4()
+      }});
     }
   }
 

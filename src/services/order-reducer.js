@@ -27,6 +27,23 @@ export const orderReducer = (state = DataDefault.order, action) => {
       };
     }
 
+    case ACTIONS.ORDER_SAVE:
+      return {
+        ...state,
+        ...action.payload,
+      };
+
+    case ACTIONS.ORDER_INVALID:
+      return {
+        ...state,
+        invalid: action.payload.invalid,
+      };
+    case ACTIONS.ORDER_INVALID_CLEAR:
+      return {
+        ...state,
+        invalid: null
+      };
+
     default:
       return state;
   }

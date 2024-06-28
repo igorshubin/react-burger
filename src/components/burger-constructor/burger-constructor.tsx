@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useState} from 'react';
 import s from './styles.module.css';
 import clsx from 'clsx';
-import {DataProps} from '../../redux/store';
+import {DataProps} from '../../services/store';
 import {getOrderTotal} from '../../utils/utils';
 import ConstructorTotal from './parts/constructor-total';
 import ConstructorList from './parts/constructor-list';

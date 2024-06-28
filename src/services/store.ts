@@ -11,7 +11,12 @@ export enum ACTIONS {
   ORDER_DELETE_BUN = 'ORDER_DELETE_BUN',
   ORDER_DELETE_INGREDIENT = 'ORDER_DELETE_INGREDIENT',
 
+  POPUP_SHOW = 'POPUP_SHOW',
+  POPUP_HIDE = 'POPUP_HIDE',
+
   ORDER_SAVE = 'ORDER_SAVE',
+  ORDER_INVALID = 'ORDER_INVALID',
+  ORDER_INVALID_CLEAR = 'ORDER_INVALID_CLEAR',
 }
 
 // STORE DATA
@@ -22,15 +27,28 @@ export const DataDefault = {
   },
   order: {
     id: null,
+    invalid: null,
+    success: false,
     bun: null,
     ingredients: [],
-    success: false,
-  }
+  },
+  popup: {
+    show: false,
+    data: null,
+    title: null,
+  },
 };
 
 export interface DataProps {
   server: DataServerProps,
   order: DataOrderProps,
+  popup: PopupProps,
+}
+
+export interface PopupProps {
+  show: boolean,
+  data: IngredientItemProps|null,
+  title: string|null,
 }
 
 export interface DataServerProps {
@@ -39,8 +57,9 @@ export interface DataServerProps {
 }
 
 export interface DataOrderProps {
-  id: string|null
+  id: number,
+  invalid: string|null,
+  success: boolean,
   bun: IngredientItemProps|null,
   ingredients: IngredientItemProps[],
-  success: boolean,
 }

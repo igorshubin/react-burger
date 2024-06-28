@@ -1,12 +1,12 @@
 import React, {FC, useEffect, useRef, useState} from 'react';
-import {useSelector} from 'react-redux';
+import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 import s from './styles.module.css';
 import clsx from 'clsx';
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import {TYPEDEFAULT, TYPES} from '../../utils/constants';
 import Ingredient from './parts/ingredient';
 import {IngredientItemProps} from '../../utils/props';
-import {DataProps} from '../../redux/store';
+import {ACTIONS, DataProps} from '../../services/store';
 import IngredientDetails from '../ingredient-details';
 import Modal from '../modal';
 import {getOrderCounts} from '../../utils/utils';
@@ -15,15 +15,31 @@ interface BurgerIngredientsProps {
 }
 
 const BurgerIngredients: FC<BurgerIngredientsProps> = () => {
-  const apiData = useSelector((state:DataProps) => state.server.data);
-  const orderData = useSelector((state:DataProps) => state.order);
+  const {apiData, orderData, popupData} = useSelector(
+    (state:DataProps) => ({
+      apiData: state.server.data,
+      orderData: state.order,
+      popupData: state.popup,
+    }),
+    shallowEqual
+  );
+
+  const dispatch = useDispatch();
 
   const [activeTab, setActiveTab] = useState<string>(TYPEDEFAULT);
   const [counts, setCounts] = useState<any>({});
-  const [modalData, setModalData] = useState<IngredientItemProps|null>(null);
+
   const refs = useRef<any>({});
 
   useEffect(() => setCounts(getOrderCounts(orderData)), [orderData]);
+
+  const showModal = (item:IngredientItemProps) => {
+    dispatch({type: ACTIONS.POPUP_SHOW,
+      payload: {
+        data: item,
+        title: 'Детали ингредиента',
+    }})
+  }
 
   /**
    * TODO:
@@ -85,7 +101,7 @@ const BurgerIngredients: FC<BurgerIngredientsProps> = () => {
                           key={item._id}
                           count={counts[item._id] ?? 0}
                           data={item}
-                          onClick={() => setModalData(item)}
+                          onClick={() => showModal(item)}
                         />)
                     }
                   </div>
@@ -101,9 +117,9 @@ const BurgerIngredients: FC<BurgerIngredientsProps> = () => {
       </div>
 
       {/* INGREDIENT MODAL */}
-      {modalData &&
-        <Modal modalClose={() => setModalData(null)} title={'Детали ингредиента'}>
-          <IngredientDetails data={modalData} />
+      {popupData.data &&
+        <Modal>
+          <IngredientDetails data={popupData.data} />
         </Modal>
       }
     </section>

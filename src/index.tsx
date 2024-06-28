@@ -6,7 +6,7 @@ import ErrorBoundary from './components/error-boundary/error-boundary';
 import "normalize.css";
 import './index.css';
 import App from './components/app';
-import {rootReducer} from './redux';
+import {rootReducer} from './services';
 import {configureStore} from '@reduxjs/toolkit';
 
 /**

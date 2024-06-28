@@ -16,10 +16,7 @@ export interface ConstructorTotalProps {
 }
 
 export interface ModalProps {
-  modalClose: () => void,
   children?: any,
-  size?: string,
-  title?: string,
 }
 export interface ModalOverlayProps {
   modalClose: () => void,

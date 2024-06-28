@@ -5,7 +5,7 @@ import AppHeader from '../app-header';
 import BurgerIngredients from '../burger-ingredients';
 import BurgerConstructor from '../burger-constructor';
 import {APIURL} from '../../utils/constants';
-import {ACTIONS} from '../../redux/store';
+import {ACTIONS} from '../../services/store';
 import {Button} from '@ya.praktikum/react-developer-burger-ui-components';
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
