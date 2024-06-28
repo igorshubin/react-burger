@@ -2,22 +2,46 @@ import React, { FC } from 'react';
 import s from './constructor-list.module.css';
 import clsx from 'clsx';
 import {ConstructorElement, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-import {ConstructorListProps} from '../../../utils/props';
+import {ConstructorListProps, IngredientItemProps} from '../../../utils/props';
 import ConstructorEmpty from './constructor-empty';
 import {useDispatch} from 'react-redux';
 import {ACTIONS} from '../../../redux/store';
 import {isMobileDevice} from '../../../utils/device';
+import {useDrop} from 'react-dnd';
+import {TYPEDEFAULT, TYPEDROP} from '../../../utils/constants';
+import {v4 as uuidv4} from 'uuid';
 
 const ConstructorList: FC<ConstructorListProps> = ({bun, ingredients}) => {
   const dispatch = useDispatch();
 
-  // TODO: remove item from list & recalc total
-  const handleDeleteElement = (id:any) => {
-    dispatch({type: ACTIONS.ORDER_DELETE_INGREDIENT, payload: {id: id}})
+  // remove item from list & recalc total
+  const handleDeleteElement = (id:any) => dispatch({type: ACTIONS.ORDER_DELETE_INGREDIENT, payload: {id: id}});
+
+  const [{isOver}, dropTarget] = useDrop({
+    accept: TYPEDROP,
+    drop(data:IngredientItemProps) {
+      orderAdd(data);
+    },
+    collect: monitor => ({
+      isOver: monitor.isOver(),
+    })
+  });
+
+  /**
+   * DnD item to order (& render element in construstor)
+   * https://react-dnd.github.io/react-dnd/about
+   */
+  const orderAdd = (data:IngredientItemProps) => {
+    if (data.type === TYPEDEFAULT) {
+      dispatch({type: ACTIONS.ORDER_ADD_BUN, payload: data});
+    } else {
+      // save with random id
+      dispatch({type: ACTIONS.ORDER_ADD_INGREDIENT, payload: {...data, id: uuidv4()}});
+    }
   }
 
   return (
-    <div className={s['constructor-list']}>
+    <div ref={dropTarget} className={clsx(s['constructor-list'], (isOver && s['constructor-list_drag-over']))}>
     {
       <div className={clsx(s['constructor-list--item'], s['constructor-list--top'], 'mb-4', 'ml-8', 'pl-4')}>
         {
@@ -59,7 +83,7 @@ const ConstructorList: FC<ConstructorListProps> = ({bun, ingredients}) => {
               )
             })
           ) : (
-            <div className={clsx(s['constructor-list--item'], 'mb-4', (!isMobileDevice() && 'ml-8 pl-4'))}>
+            <div className={clsx(s['constructor-list--item'], (!isMobileDevice() && 'ml-8 pl-4'))}>
               <ConstructorEmpty position={'list'} />
             </div>
           )
@@ -68,7 +92,7 @@ const ConstructorList: FC<ConstructorListProps> = ({bun, ingredients}) => {
     }
 
     {
-      <div className={clsx(s['constructor-list--item'], s['constructor-list--bottom'], 'ml-8', 'pl-4')}>
+      <div className={clsx(s['constructor-list--item'], s['constructor-list--bottom'], 'ml-8', 'pl-4', (!ingredients && 'mt-4'))}>
         {
           bun ? (
             <ConstructorElement

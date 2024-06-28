@@ -13,6 +13,7 @@ import {checkOrderValid} from '../../../utils/utils';
 const ConstructorTotal: FC<ConstructorTotalProps> = ({total}) => {
   const orderData = useSelector((state:DataProps) => state.order);
   const [showModal, setShowModal] = useState(false);
+  const [invalidError, setInvalidError] = useState<string|null>(null);
   const [orderId, setOrderId] = useState<number|null>(null);
 
   // TODO: create order & pass orderId to modal
@@ -21,7 +22,7 @@ const ConstructorTotal: FC<ConstructorTotalProps> = ({total}) => {
 
     const error = checkOrderValid(orderData);
     if (error) {
-      alert(error);
+      setInvalidError(error);
       return false;
     }
 
@@ -50,6 +51,9 @@ const ConstructorTotal: FC<ConstructorTotalProps> = ({total}) => {
         <Modal modalClose={() => setShowModal(false)}>
           <OrderDetails orderId={orderId} />
         </Modal>
+      }
+      {
+        invalidError && <Modal title={invalidError} modalClose={() => setInvalidError(null)} />
       }
     </>
   );

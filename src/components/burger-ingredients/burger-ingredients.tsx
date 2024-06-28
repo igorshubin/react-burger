@@ -17,6 +17,7 @@ interface BurgerIngredientsProps {
 const BurgerIngredients: FC<BurgerIngredientsProps> = () => {
   const apiData = useSelector((state:DataProps) => state.server.data);
   const orderData = useSelector((state:DataProps) => state.order);
+
   const [activeTab, setActiveTab] = useState<string>(TYPEDEFAULT);
   const [counts, setCounts] = useState<any>({});
   const [modalData, setModalData] = useState<IngredientItemProps|null>(null);

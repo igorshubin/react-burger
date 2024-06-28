@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import reportWebVitals from './reportWebVitals';
 import ErrorBoundary from './components/error-boundary/error-boundary';
@@ -8,12 +7,14 @@ import "normalize.css";
 import './index.css';
 import App from './components/app';
 import {rootReducer} from './redux';
+import {configureStore} from '@reduxjs/toolkit';
 
 /**
- * TODO: research @reduxjs/toolkit
  * https://redux-toolkit.js.org/introduction/getting-started
  */
-const store = createStore(rootReducer);
+const store = configureStore({
+  reducer: rootReducer
+});
 
 ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

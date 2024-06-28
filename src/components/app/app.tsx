@@ -7,6 +7,8 @@ import BurgerConstructor from '../burger-constructor';
 import {APIURL} from '../../utils/constants';
 import {ACTIONS} from '../../redux/store';
 import {Button} from '@ya.praktikum/react-developer-burger-ui-components';
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 /**
  * DOCS: https://practicum.yandex.ru/learn/react/courses/6441f7e7-93d6-4080-8c0a-4a4592d217d8/sprints/272768/topics/a41defff-0d49-4064-9b0b-7819d835ccbd/lessons/15a39cf4-ef79-4536-ada2-12519ff8db40/
@@ -62,10 +64,10 @@ const App: FC = () => {
         }
         {
           !loading && success &&
-            <>
+            <DndProvider backend={HTML5Backend}>
               <BurgerIngredients/>
               <BurgerConstructor/>
-            </>
+            </DndProvider>
         }
       </main>
     </div>
