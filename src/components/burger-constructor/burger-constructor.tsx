@@ -3,7 +3,7 @@ import s from './styles.module.css';
 import clsx from 'clsx';
 import {DataProps} from '../../services/store';
 import {getOrderTotal} from '../../utils/utils';
-import ConstructorTotal from './parts/constructor-total';
+import ConstructorOrder from './parts/constructor-order';
 import ConstructorList from './parts/constructor-list';
 import {useSelector} from 'react-redux';
 
@@ -15,8 +15,8 @@ const BurgerConstructor: FC<BurgerConstructorProps> = () => {
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
-    setTotal(getOrderTotal(orderData));
-  }, [orderData]);
+    setTotal(getOrderTotal(orderData.bun, orderData.ingredients));
+  }, [orderData.bun, orderData.ingredients.length]);
 
   return(
     <section className={clsx(s['bc'], 'ml-10', 'mt-25')}>
@@ -24,7 +24,7 @@ const BurgerConstructor: FC<BurgerConstructorProps> = () => {
           <>
             <ConstructorList {...orderData}/>
 
-            <ConstructorTotal total={total}/>
+            <ConstructorOrder total={total}/>
           </>
       }
     </section>

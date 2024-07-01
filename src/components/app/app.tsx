@@ -23,7 +23,7 @@ const App: FC = () => {
 
   useEffect(() => {
     const getData = async () => {
-      await fetch(APIURL)
+      await fetch(`${APIURL}/ingredients`)
         .then(res => {
           if (res.ok) {
             return res.json();

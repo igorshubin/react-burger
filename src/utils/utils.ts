@@ -21,17 +21,17 @@ export const getOrderCounts = (order: DataOrderProps) => {
   return counter;
 }
 
-export const getOrderTotal = (order: DataOrderProps) => {
+export const getOrderTotal = (bun: IngredientItemProps|null, ingredients: IngredientItemProps[]) => {
   let total = 0;
 
-  if (order.ingredients?.length) {
-    total += order.ingredients.reduce( function(a, b){
+  if (ingredients?.length) {
+    total += ingredients.reduce( function(a, b){
       return a + b.price;
     }, 0);
   }
 
-  if (order.bun) {
-    total += order.bun.price * 2;
+  if (bun) {
+    total += bun.price * 2;
   }
 
   return total;

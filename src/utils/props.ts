@@ -11,7 +11,7 @@ export interface ConstructorCardProps {
   moveCard: (dragIndex: number, hoverIndex: number) => void
 }
 
-export interface ConstructorTotalProps {
+export interface ConstructorOrderProps {
   total: number
 }
 
@@ -23,7 +23,8 @@ export interface ModalOverlayProps {
 }
 
 export interface OrderDetailsProps {
-  orderId: number|null
+  orderId: number|null,
+  orderName: string|null,
 }
 
 export interface IngredientProps {

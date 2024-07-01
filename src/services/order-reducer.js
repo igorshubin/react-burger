@@ -32,6 +32,11 @@ export const orderReducer = (state = DataDefault.order, action) => {
         ...state,
         ...action.payload,
       };
+    case ACTIONS.ORDER_SORT:
+      return {
+        ...state,
+        ingredients: [...action.payload],
+      };
 
     case ACTIONS.ORDER_INVALID:
       return {

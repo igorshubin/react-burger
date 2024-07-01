@@ -1,6 +1,6 @@
 
 
-export const APIURL = 'https://norma.nomoreparties.space/api/ingredients';
+export const APIURL = 'https://norma.nomoreparties.space/api';
 
 export const TYPEDROP = 'ingredient';
 export const TYPESORT = 'sortable';

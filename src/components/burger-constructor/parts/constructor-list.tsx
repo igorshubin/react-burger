@@ -19,6 +19,7 @@ const ConstructorList: FC<ConstructorListProps> = ({bun, ingredients}) => {
   const [cards, setCards] = useState<IngredientItemProps[]>(ingredients);
   useEffect(() => setCards(ingredients), [ingredients]);
 
+  // new item dropped to constructor list
   const [{isOver}, dropTarget] = useDrop({
     accept: TYPEDROP,
     drop(data:IngredientItemProps) {
@@ -43,10 +44,12 @@ const ConstructorList: FC<ConstructorListProps> = ({bun, ingredients}) => {
         ...data, id: uuidv4()
       }});
     }
-  }
+  };
 
-  // dnd sort items in order
-  // https://codesandbox.io/s/github/react-dnd/react-dnd/tree/gh-pages/examples_ts/04-sortable/simple?from-embed=&file=/src/Card.tsx
+  /**
+   * dnd sort items in order
+   * https://codesandbox.io/s/github/react-dnd/react-dnd/tree/gh-pages/examples_ts/04-sortable/simple?from-embed=&file=/src/Card.tsx
+   */
   const moveCard = useCallback((dragIndex: number, hoverIndex: number) => {
     setCards(prevCards =>
       update(prevCards, {
@@ -54,19 +57,26 @@ const ConstructorList: FC<ConstructorListProps> = ({bun, ingredients}) => {
           [dragIndex, 1],
           [hoverIndex, 0, prevCards[dragIndex] as IngredientItemProps],
         ],
-      }),
-    )
-  }, [])
+      })
+    );
+  }, []);
+
+  // save sorted list to store - DUPLICATED RENDER ???
+/*  useEffect(() => {
+    if (cards.length) {
+      dispatch({type: ACTIONS.ORDER_SORT, payload: cards});
+    }
+  }, [cards, dispatch, moveCard]);*/
 
 
   const renderCard = useCallback(
     (card: IngredientItemProps, index: number) => {
       return (
-        <ConstructorCard id={card.id} item={card} index={index} moveCard={moveCard} />
+        <ConstructorCard key={card.id} id={card.id} item={card} index={index} moveCard={moveCard} />
       )
     },
-    [],
-  )
+    [moveCard],
+  );
 
   return (
     <div ref={dropTarget} className={clsx(s['constructor-list'], (isOver && s['constructor-list_drag-over']))}>
