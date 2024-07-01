@@ -5,7 +5,7 @@ import {ModalProps} from '../../utils/props';
 import clsx from 'clsx';
 import {CloseIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import ModalOverlay from './modal-overlay';
-import {ACTIONS, DataProps} from '../../services/store';
+import {ACTIONS, DataProps} from '../../services/redux/store';
 import {shallowEqual, useDispatch, useSelector} from 'react-redux';
 
 const Modal: FC<ModalProps> = ({children}) => {

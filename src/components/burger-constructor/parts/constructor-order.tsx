@@ -1,6 +1,6 @@
 import React, {FC, useCallback, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {ACTIONS, DataProps} from '../../../services/store';
+import {ACTIONS, DataProps} from '../../../services/redux/store';
 import s from './constructor-order.module.css';
 import clsx from 'clsx';
 import {Button, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';

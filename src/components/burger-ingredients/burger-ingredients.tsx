@@ -6,7 +6,7 @@ import {Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import {TYPEDEFAULT, TYPES} from '../../utils/constants';
 import Ingredient from './parts/ingredient';
 import {IngredientItemProps} from '../../utils/props';
-import {ACTIONS, DataProps} from '../../services/store';
+import {ACTIONS, DataProps} from '../../services/redux/store';
 import IngredientDetails from '../ingredient-details';
 import Modal from '../modal';
 import {getOrderCounts} from '../../utils/utils';

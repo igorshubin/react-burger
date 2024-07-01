@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import {ConstructorElement, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import {ConstructorCardProps} from '../../../utils/props';
 import {useDispatch} from 'react-redux';
-import {ACTIONS} from '../../../services/store';
+import {ACTIONS} from '../../../services/redux/store';
 import type { Identifier, XYCoord } from 'dnd-core';
 import { useDrag, useDrop } from 'react-dnd';
 import {TYPESORT} from '../../../utils/constants';

@@ -5,7 +5,7 @@ import {ConstructorElement} from '@ya.praktikum/react-developer-burger-ui-compon
 import {ConstructorListProps, IngredientItemProps} from '../../../utils/props';
 import ConstructorEmpty from './constructor-empty';
 import {useDispatch} from 'react-redux';
-import {ACTIONS} from '../../../services/store';
+import {ACTIONS} from '../../../services/redux/store';
 import {isMobileDevice} from '../../../utils/device';
 import {useDrop} from 'react-dnd';
 import {TYPEDEFAULT, TYPEDROP} from '../../../utils/constants';

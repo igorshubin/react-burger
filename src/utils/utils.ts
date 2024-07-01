@@ -1,4 +1,4 @@
-import {DataOrderProps} from '../services/store';
+import {DataOrderProps} from '../services/redux/store';
 import {IngredientItemProps} from './props';
 
 export const getOrderCounts = (order: DataOrderProps) => {

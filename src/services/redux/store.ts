@@ -1,4 +1,4 @@
-import {IngredientItemProps} from '../utils/props';
+import {IngredientItemProps} from '../../utils/props';
 
 // STORE ACTIONS
 export enum ACTIONS {
