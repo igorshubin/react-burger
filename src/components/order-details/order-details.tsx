@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import s from './styles.module.css';
 import clsx from 'clsx';
-import orderIcon from '../../images/order-icon.svg'
+import orderIcon from '../../images/order-icon.svg';
 import {OrderDetailsProps} from '../../utils/props';
 import {isMobileDevice} from '../../utils/device';
 

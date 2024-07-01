@@ -11,6 +11,8 @@
 .bi--tabs {
     display: flex;
     align-items: center;
+
+    border: solid blue;
 }
 
 
@@ -25,7 +27,7 @@
 }
 
 .bi--content {
-
+    border: solid red;
 }
 .bi--content-title {
 

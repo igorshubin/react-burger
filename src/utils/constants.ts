@@ -10,20 +10,11 @@ export const TYPESORT = 'sortable';
  */
 export const TYPEDEFAULT = 'bun';
 
-export const TYPES = [
-  {
-    id: 'bun',
-    name: 'Булки',
-  },
-  {
-    id: 'sauce',
-    name: 'Соусы',
-  },
-  {
-    id: 'main',
-    name: 'Начинки',
-  },
-];
+export enum TYPES {
+  bun = 'Булки',
+  sauce = 'Соусы',
+  main = 'Начинки',
+}
 
 export enum INGRSTATS {
   calories = 'Калории, ккал',

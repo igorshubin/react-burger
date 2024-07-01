@@ -48,6 +48,18 @@ const BurgerIngredients: FC<BurgerIngredientsProps> = () => {
    * research: https://www.youtube.com/watch?v=ldgnmiPIftw&list=PL6DxKON1uLOHsBCJ_vVuvRsW84VnqmPp6&index=3
    */
   const handleScroll = (e: React.UIEvent<HTMLElement>): void => {
+    const parentTop = e.currentTarget.getBoundingClientRect().top;
+    console.clear();
+
+    Object.entries(TYPES).map(([id, name]) => {
+      const childTop = parseInt(refs.current[id].getBoundingClientRect().top);
+      console.log(id, childTop);
+
+      if (childTop < parentTop) {
+        console.log(id.toUpperCase());
+      }
+    })
+
 /*    console.log({
       event: e,
       target: e.target,
@@ -69,12 +81,12 @@ const BurgerIngredients: FC<BurgerIngredientsProps> = () => {
       </div>
 
       {/* TABS */}
-      <nav className={clsx(s['bi--tabs'], 'mb-10', 'tabs-mobile')}>
+      <nav className={clsx(s['bi--tabs'], 'tabs-mobile')}>
         {
-          TYPES.map((item, k) => {
+          Object.entries(TYPES).map(([id, name]) => {
             return (
-              <Tab key={k} active={activeTab === item.id} value={item.id} onClick={handleTabClick}>
-                {item.name}
+              <Tab key={id} active={activeTab === id} value={id} onClick={handleTabClick}>
+                {name}
               </Tab>
             )
           })
@@ -82,15 +94,15 @@ const BurgerIngredients: FC<BurgerIngredientsProps> = () => {
       </nav>
 
       {/* TITLES & LISTS */}
-      <div onScroll={handleScroll} className={clsx(s['bi--root'])}>
+      <div onScroll={handleScroll} className={clsx(s['bi--root'], 'mt-10')}>
         {
-          TYPES.map((type, key) => {
-            const list = apiData.filter((i:IngredientItemProps) => i.type === type.id);
+          Object.entries(TYPES).map(([id, name]) => {
+            const list = apiData.filter((i:IngredientItemProps) => i.type === id);
 
             return (
-              <div key={key} ref={el => refs.current[type.id] = el} className={s['bi--content']}>
+              <div key={id} ref={el => refs.current[id] = el} className={s['bi--content']}>
                 <div className={clsx(s['bi--content-title'], 'text', 'text_type_main-medium', 'mb-6')}>
-                  {type.name}
+                  {name}
                 </div>
 
                 {list.length? (
