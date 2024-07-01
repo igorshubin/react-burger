@@ -51,6 +51,9 @@ const ConstructorOrder: FC<ConstructorOrderProps> = ({total}) => {
     // save order request
     const saveOrder = async () => {
       await fetch(`${APIURL}/orders`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
         method: 'POST',
         body: JSON.stringify({
           ingredients
@@ -63,8 +66,6 @@ const ConstructorOrder: FC<ConstructorOrderProps> = ({total}) => {
           return Promise.reject(res);
         })
         .then(data => {
-          console.log('data', data);
-
           dispatch({type: ACTIONS.ORDER_SAVE,
             payload: data
           });
@@ -73,24 +74,6 @@ const ConstructorOrder: FC<ConstructorOrderProps> = ({total}) => {
             }});
         })
         .catch(e => {
-          // EMULATE SUCCESS
-          /*
-          const data = {
-            "name": "Краторный метеоритный бургер",
-            "order": {
-              "number": 6257
-            },
-            "success": true
-          };
-          dispatch({type: ACTIONS.ORDER_SAVE,
-            payload: data
-          });
-          dispatch({type: ACTIONS.POPUP_SHOW, payload: {
-              title: data.name
-            }});
-          return;
-           */
-
           console.error('Ошибка API:', e);
           showOrderInvalid('Ошибка создания заказа. Попробуйте еще раз через минутку.');
         })
