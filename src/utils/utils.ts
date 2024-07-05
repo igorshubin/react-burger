@@ -1,25 +1,59 @@
+import {DataOrderProps} from '../services/redux/store';
 import {IngredientItemProps} from './props';
-import {TYPEDEFAULT} from './constants';
 
+export const getOrderCounts = (order: DataOrderProps) => {
+  let counter:any = {};
 
-/**
- * Parse data to get Constructor top/bottom & inner list
- * @param bunKey Key of bun for top/bottom (TODO: get from selected BUN ingredients, in left section)
- * @param data
- */
-export const getConstructorData = (data: IngredientItemProps[], bunKey: number = 0) => {
-  const top: IngredientItemProps|null = data[bunKey];
-  const bottom: IngredientItemProps|null = data[bunKey];
-  const list: IngredientItemProps[]|[] = data.filter((i) => i.type !== TYPEDEFAULT);
+  if (order.ingredients?.length) {
+    order.ingredients.forEach((i:IngredientItemProps) => {
+      if (!counter[i._id]) {
+        counter[i._id] = 1;
+      } else {
+        counter[i._id] = counter[i._id]+1;
+      }
+    });
+  }
 
-  return {top, bottom, list};
+  if (order.bun) {
+    counter[order.bun._id] = 2;
+  }
+
+  return counter;
 }
 
-/**
- * Calc constructor total money amount
- * @param data
- */
-export const getConstructorTotal = (data: IngredientItemProps[]) => {
-  // TODO: calc totals prices from data & multiply to counts
-  return 9999;
+export const getOrderTotal = (bun: IngredientItemProps|null, ingredients: IngredientItemProps[]) => {
+  let total = 0;
+
+  if (ingredients?.length) {
+    total += ingredients.reduce( function(a, b){
+      return a + b.price;
+    }, 0);
+  }
+
+  if (bun) {
+    total += bun.price * 2;
+  }
+
+  return total;
+}
+
+export const checkOrderValid = (order: DataOrderProps) => {
+  let error = null;
+
+  if (!order.ingredients?.length) {
+    error = 'Вы еще не выбрали начинку!';
+  }
+  if (!order.bun) {
+    error = 'Вы забыли добавить булки!';
+  }
+
+  return error;
+}
+
+export const checkResponse = (res:Response) => {
+    if (res.ok) {
+      return res.json();
+    }
+
+    return Promise.reject(res);
 }

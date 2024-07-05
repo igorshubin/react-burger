@@ -1,15 +1,15 @@
 import React, {FC} from 'react';
 import s from './styles.module.css';
 import clsx from 'clsx';
-import orderIcon from '../../images/order-icon.svg'
+import orderIcon from '../../images/order-icon.svg';
 import {OrderDetailsProps} from '../../utils/props';
 import {isMobileDevice} from '../../utils/device';
 
-const OrderDetails: FC<OrderDetailsProps> = ({orderId}) => {
+const OrderDetails: FC<OrderDetailsProps> = ({orderId, orderName = null}) => {
   return (
     <div className={clsx(s['order-details'], 'mb-5')}>
 
-      <div className={clsx(s['order-details--id'], 'text', 'text_type_digits-large', 'mb-8', 'mt-5')}>
+      <div title={orderName ?? ''} className={clsx(s['order-details--id'], 'text', 'text_type_digits-large', 'mb-8', 'mt-5')}>
         {orderId}
       </div>
 

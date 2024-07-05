@@ -1,11 +1,13 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useEffect} from 'react';
 import s from "./styles.module.css";
 import AppHeader from '../app-header';
 import BurgerIngredients from '../burger-ingredients';
 import BurgerConstructor from '../burger-constructor';
-import {DataDefault, DataProps} from '../../utils/props';
-import {APIURL} from '../../utils/constants';
 import {Button} from '@ya.praktikum/react-developer-burger-ui-components';
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import {fetchData} from '../../services/redux/server-slice';
+import {useAppDispatch, useAppSelector} from '../../hooks';
 
 /**
  * DOCS: https://practicum.yandex.ru/learn/react/courses/6441f7e7-93d6-4080-8c0a-4a4592d217d8/sprints/272768/topics/a41defff-0d49-4064-9b0b-7819d835ccbd/lessons/15a39cf4-ef79-4536-ada2-12519ff8db40/
@@ -14,31 +16,14 @@ import {Button} from '@ya.praktikum/react-developer-burger-ui-components';
  */
 
 const App: FC = () => {
-  const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<DataProps>(DataDefault);
+  const dispatch = useAppDispatch();
+  const serverData = useAppSelector(state => state.server);
 
   useEffect(() => {
-    const getData = async () => {
-      await fetch(APIURL)
-        .then(res => {
-          if (res.ok) {
-            return res.json();
-          }
-          return Promise.reject(res);
-        })
-        .then(data => setData({
-          ...data,
-          count: data.data.length
-        }))
-        .catch(e => {
-          console.error('Ошибка API:', e);
-          setData(DataDefault);
-        });
+    if (serverData.status === 'idle' && !serverData.success) {
+      dispatch(fetchData());
     }
-
-    getData()
-      .finally(() => setLoading(false));
-  }, []);
+  }, [dispatch, serverData.status, serverData.success]);
 
   return (
     <div className={s['app']}>
@@ -46,24 +31,26 @@ const App: FC = () => {
 
       <main className={s['app-content']}>
         {
-          loading &&  <div className={s['app-loading']}>
-            Загружаем приложение...
-          </div>
+          serverData.status === 'loading' &&
+            <div className={s['app-loading']}>
+              Загружаем приложение...
+            </div>
         }
         {
-          !loading && !data.success && <div className={s['app-error']}>
-            Ошибка получения данных!
-            <Button type={'secondary'} htmlType={'reset'} onClick={() => window.location.reload()}>
-              Перегрузить страницу
-            </Button>
-          </div>
+          serverData.status === 'error' &&
+            <div className={s['app-error']}>
+              Ошибка получения данных!
+              <Button type={'secondary'} htmlType={'reset'} onClick={() => window.location.reload()}>
+                Перегрузить страницу
+              </Button>
+            </div>
         }
         {
-          !loading && data.success &&
-            <>
-              <BurgerIngredients apiData={data} />
-              <BurgerConstructor apiData={data} />
-            </>
+          serverData.success &&
+            <DndProvider backend={HTML5Backend}>
+              <BurgerIngredients/>
+              <BurgerConstructor/>
+            </DndProvider>
         }
       </main>
     </div>

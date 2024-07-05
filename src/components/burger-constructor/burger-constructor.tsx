@@ -1,48 +1,27 @@
 import React, {FC, useEffect, useState} from 'react';
 import s from './styles.module.css';
 import clsx from 'clsx';
-import {ConstructorListProps, DataProps} from '../../utils/props';
-import {getConstructorTotal, getConstructorData} from '../../utils/utils';
-import ConstructorTotal from './parts/constructor-total';
+import {getOrderTotal} from '../../utils/utils';
+import Order from '../order';
 import ConstructorList from './parts/constructor-list';
+import {useAppSelector} from '../../hooks';
 
-interface BurgerConstructorProps {
-  apiData: DataProps
-}
-
-const BurgerConstructor: FC<BurgerConstructorProps> = ({apiData}) => {
+const BurgerConstructor: FC = () => {
+  const orderData = useAppSelector(state => state.order);
   const [total, setTotal] = useState(0);
-  const [data, setData] = useState<ConstructorListProps>({
-    top: null,
-    bottom: null,
-    list: null,
-  });
 
   useEffect(() => {
-    const cData = getConstructorData(apiData.data);
-    setData({
-      top: cData.top,
-      bottom: cData.bottom,
-      list: cData.list.length? cData.list : null,
-    });
-
-    setTotal(getConstructorTotal(apiData.data));
-  }, [apiData.data]);
+    setTotal(getOrderTotal(orderData.bun, orderData.ingredients));
+  }, [orderData.bun, orderData.ingredients, orderData.ingredients.length]);
 
   return(
     <section className={clsx(s['bc'], 'ml-10', 'mt-25')}>
       {
-        (data.top || data.bottom || data.list)? (
           <>
-            <ConstructorList {...data}/>
+            <ConstructorList {...orderData}/>
 
-            <ConstructorTotal total={total}/>
+            <Order total={total}/>
           </>
-        ) : (
-          <div className={s['bc--empty']}>
-            Нужно выбрать ингредиент.
-          </div>
-        )
       }
     </section>
   );
