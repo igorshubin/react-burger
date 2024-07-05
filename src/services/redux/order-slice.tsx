@@ -42,13 +42,7 @@ export const orderSlice = createSlice({
     },
 
     orderClear: (state) => {
-      return {
-        ...state,
-        error: null,
-        number: null,
-        name: null,
-        success: false,
-      }
+      return DataDefault.order;
     },
   },
   extraReducers(builder) {
