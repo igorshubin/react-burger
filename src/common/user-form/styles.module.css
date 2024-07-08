@@ -1,0 +1,30 @@
+
+.user-form {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-form--buttons {
+    display: flex;
+    align-items: center;
+}
+.user-form--buttons_profile {
+    margin-left: auto;
+}
+.user-form--button-reset,
+.user-form--button-reset:hover {
+    background: transparent;
+    box-shadow: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--colors-interface-accent);
+    text-decoration: none;
+    border: none;
+    min-height: 58px;
+    padding-left: calc(var(--offset-base-size) * 5);
+    padding-right: calc(var(--offset-base-size) * 5);
+}

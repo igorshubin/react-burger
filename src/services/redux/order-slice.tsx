@@ -1,22 +1,15 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {DataDefault} from './store';
-import {APIURL} from '../../utils/constants';
-import {checkResponse} from '../../utils/utils';
+import {API_DEBUG} from '../../utils/constants';
+import {apiRequest} from '../../utils/request';
 
-export const postData = createAsyncThunk('order/postData', async (ingredients:string[]) => {
-  return await fetch(`${APIURL}/orders`, {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    method: 'POST',
-    body: JSON.stringify({
-      ingredients
-    }),
-  })
-    .then(checkResponse)
-    .then(data => data);
-});
-
+/**
+ * https://redux.js.org/tutorials/essentials/part-5-async-logic
+ * https://redux.js.org/usage/writing-logic-thunks
+ * https://redux-toolkit.js.org/api/createAsyncThunk#handling-thunk-results
+ */
+const orderApiPrefix = 'order/api';
+export const orderApi = createAsyncThunk(orderApiPrefix, async (data:any, thunkApi) => apiRequest(data, thunkApi, orderApiPrefix));
 
 export const orderSlice = createSlice({
   name: 'order',
@@ -47,10 +40,15 @@ export const orderSlice = createSlice({
   },
   extraReducers(builder) {
     builder
-      .addCase(postData.pending, (state) => {
+      .addCase(orderApi.pending, (state) => {
         state.status = 'loading';
+        state.error = null;
       })
-      .addCase(postData.fulfilled, (state, action) => {
+      .addCase(orderApi.fulfilled, (state, action) => {
+        if (API_DEBUG) {
+          console.log('orderSlice:OK', action);
+        }
+
         state.status = 'idle';
         if (action.payload.success) {
           state.success = true;
@@ -58,10 +56,14 @@ export const orderSlice = createSlice({
           state.number = action.payload.order.number;
         }
       })
-      .addCase(postData.rejected, (state, action) => {
+      .addCase(orderApi.rejected, (state, action) => {
+        if (API_DEBUG) {
+          console.error('orderSlice:ERR', action);
+        }
+
         state.status = 'error';
-        state.error = action?.error?.message ?? '';
-      })
+        state.error = action.payload;
+      });
   }
 });
 

@@ -4,8 +4,9 @@ import clsx from 'clsx';
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import {IngredientProps} from '../../../utils/props';
 import {isMobileDevice} from '../../../utils/device';
-import {TYPEDROP} from '../../../utils/constants';
+import {PAGES, TYPEDROP} from '../../../utils/constants';
 import { useDrag } from "react-dnd";
+import {Link, useLocation} from 'react-router-dom';
 
 const Ingredient: FC<IngredientProps> = ({
   data,
@@ -20,13 +21,19 @@ const Ingredient: FC<IngredientProps> = ({
     })
   }, []);
 
+  const location = useLocation();
+
   return (
       <div ref={dragRef} style={{ opacity }} onClick={onClick} className={clsx(s['ingredient'], 'mb-8')}>
         {count ? <Counter count={count} extraClass={s['ingredient--count']}/> : ''}
 
-        <div className={s['ingredient--img']}>
+        <Link
+          to={PAGES.ingredientId.replace(':id', data._id)}
+          className={s['ingredient--img']}
+          state={{ backgroundLocation: location }}
+        >
           <img src={isMobileDevice()? data.image_mobile : data.image} alt={data.name}/>
-        </div>
+        </Link>
 
         <div className={clsx(s['ingredient--price'], 'p-1', 'text', 'text_type_digits-default')}>
           <span className='mr-1'>

@@ -2,111 +2,126 @@ import React, {FC, useCallback, useEffect} from 'react';
 import s from './styles.module.css';
 import clsx from 'clsx';
 import {Button, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-import {isMobileDevice} from '../../utils/device';
 import {OrderProps} from '../../utils/props';
 import OrderDetails from '../order-details';
 import Modal from '../modal';
-import {checkOrderValid} from '../../utils/utils';
-import {orderErrorClear, orderError, postData, orderClear} from '../../services/redux/order-slice';
+import {getOrderError} from '../../utils/order';
+import {orderErrorClear, orderError, orderApi, orderClear} from '../../services/redux/order-slice';
 import {popupShow} from '../../services/redux/popup-slice';
 import {useAppDispatch, useAppSelector} from '../../hooks';
+import ButtonLoader from '../../common/button-loader';
+import {useNavigate} from 'react-router-dom';
+import {PAGES} from '../../utils/constants';
 
 const Order: FC<OrderProps> = ({total}) => {
-  const orderData = useAppSelector(state => state.order);
-  const appDispatch = useAppDispatch();
+  const orderStore = useAppSelector(state => state.order);
+  const {auth, accessToken} = useAppSelector(state => state.user);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const createOrder = () => {
-    if (orderData.status === 'loading') {
-      console.log('Заказ уже создается...');
-      return false;
-    }
+  const loginOrder = () => {
+    dispatch(orderErrorClear());
 
-    if (orderData.success) {
-      showOrderError(`Заказ ${orderData.number} уже создан.`);
-      return false;
-    }
-
-    appDispatch(orderErrorClear());
-
-    const error = checkOrderValid(orderData);
+    const error = getOrderError(orderStore);
     if (error) {
       showOrderError(error);
       return false;
     }
 
-    const ingredients = orderData.ingredients.map(({ _id }) => _id);
-    if (orderData.bun) {
-      ingredients.unshift(orderData.bun._id);
-      // duplicate bun to bottom ???
-      //ingredients.push(orderData.bun._id);
+    navigate(PAGES.login);
+  }
+
+  const createOrder = () => {
+    if (orderStore.status === 'loading') {
+      console.log('Заказ уже создается...');
+      return false;
+    }
+
+    if (orderStore.success) {
+      showOrderError(`Заказ ${orderStore.number} уже создан.`);
+      return false;
+    }
+
+    dispatch(orderErrorClear());
+
+    const error = getOrderError(orderStore);
+    if (error) {
+      showOrderError(error);
+      return false;
+    }
+
+    const ingredients = orderStore.ingredients.map(({ _id }) => _id);
+    if (orderStore.bun) {
+      ingredients.unshift(orderStore.bun._id);
     }
 
     // save order request
-    appDispatch(postData(ingredients));
+    dispatch(orderApi({
+      accessToken,
+      body: {
+        ingredients
+      },
+    }));
   }
 
   const showOrderError = useCallback((error:string) => {
-    appDispatch(orderError(error));
-    appDispatch(popupShow({
+    dispatch(orderError(error));
+    dispatch(popupShow({
       title: error
     }));
-  }, [appDispatch]);
-
-  const buttonContent = useCallback(() => {
-    if (orderData.status === 'loading') {
-      return (
-        <>
-          <span className={s['order--spinner']} />
-          <span>Оформляем...</span>
-        </>
-      )
-    }
-
-    if (orderData.success && orderData.number) {
-      return 'Заказ оформлен';
-    }
-
-    return 'Оформить заказ';
-  }, [orderData.status, orderData.success, orderData.number]);
+  }, [dispatch]);
 
   useEffect(() => {
-    if (orderData.success) {
-      appDispatch(popupShow({
-        title: orderData.name
+    if (orderStore.success) {
+      dispatch(popupShow({
+        title: orderStore.name
       }));
     }
-  }, [appDispatch, orderData.name, orderData.success]);
+  }, [dispatch, orderStore.name, orderStore.success]);
 
   useEffect(() => {
-    if (orderData.error) {
-      showOrderError(orderData.error);
+    if (orderStore.error) {
+      showOrderError(orderStore.error);
     }
-  }, [orderData.error, showOrderError]);
+  }, [orderStore.error, showOrderError]);
 
   return (
     <>
       <div className={clsx(s['order'], 'mt-10', 'mr-4', 'ml-4')}>
-        <div className={clsx(s['order--total'], 'text', 'text_type_digits-medium')}>
+        <div className={clsx(s['order--total'], 'text', 'mr-10','text_type_digits-medium')}>
           <span className={'mr-1'}>
             {total}
           </span>
           <CurrencyIcon type={'primary'}/>
         </div>
 
-        <Button onClick={createOrder} htmlType={'submit'} size={isMobileDevice()? 'small' : 'large'} extraClass={clsx('ml-10', (orderData.status === 'loading' && s['order--loader']))}>
-          {buttonContent()}
-        </Button>
+        {auth? (
+          <ButtonLoader
+            onClick={createOrder}
+            type={'submit'}
+            status={orderStore.status}
+            success={orderStore.success}
+            text={{
+              loading: 'Оформляем',
+              success: 'Заказ оформлен',
+              idle: 'Оформить заказ',
+            }} />
+        ) : (
+          <Button onClick={loginOrder} htmlType={'submit'}>
+            Оформить заказ
+          </Button>
+        )}
       </div>
 
       {
-        orderData.success && !orderData.error &&
-        <Modal onClose={() => appDispatch(orderClear())}>
-          <OrderDetails orderId={orderData.number} orderName={orderData.name} />
+        orderStore.success && !orderStore.error &&
+        <Modal onClose={() => dispatch(orderClear())}>
+          <OrderDetails orderId={orderStore.number} orderName={orderStore.name} />
         </Modal>
       }
 
       {
-        orderData.error && <Modal />
+        orderStore.error && <Modal onClose={() => dispatch(orderErrorClear())} />
       }
     </>
   );

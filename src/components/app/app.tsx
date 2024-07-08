@@ -1,58 +1,77 @@
 import React, {FC, useEffect} from 'react';
-import s from "./styles.module.css";
+import {Route, Routes, useLocation, useNavigate} from 'react-router-dom';
 import AppHeader from '../app-header';
-import BurgerIngredients from '../burger-ingredients';
-import BurgerConstructor from '../burger-constructor';
-import {Button} from '@ya.praktikum/react-developer-burger-ui-components';
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import {fetchData} from '../../services/redux/server-slice';
-import {useAppDispatch, useAppSelector} from '../../hooks';
-
-/**
- * DOCS: https://practicum.yandex.ru/learn/react/courses/6441f7e7-93d6-4080-8c0a-4a4592d217d8/sprints/272768/topics/a41defff-0d49-4064-9b0b-7819d835ccbd/lessons/15a39cf4-ef79-4536-ada2-12519ff8db40/
- * FIGMA: https://www.figma.com/design/zFGN2O5xktHl9VmoOieq5E/React-_-%D0%9F%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D0%BD%D1%8B%D0%B5-%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D0%B8_external_link?node-id=0-1&t=m9YBL9BZGW6hYKrJ-0
- * CSS: https://yandex-practicum.github.io/react-developer-burger-ui-components/docs/
- */
+import s from "./styles.module.css";
+import {useAppSelector} from '../../hooks';
+import {PAGES} from '../../utils/constants';
+import Constructor from '../../pages/constructor';
+import Ingredient from '../../pages/ingredient';
+import Login from '../../pages/login';
+import Register from '../../pages/register';
+import ForgotPassword from '../../pages/forgot-password';
+import ResetPassword from '../../pages/reset-password';
+import NotFound from '../../pages/not-found';
+import Profile from '../../pages/profile';
+import ProfileOrders from '../../pages/profile-orders';
+import Modal from '../modal';
+import IngredientDetails from '../ingredient-details';
+import ProtectedRoutes from '../protected-routes';
 
 const App: FC = () => {
-  const dispatch = useAppDispatch();
-  const serverData = useAppSelector(state => state.server);
+  const popupStore = useAppSelector(state => state.popup);
 
+  /**
+   * switch between two routes depending on backgroundLocation state
+   * https://github.com/remix-run/react-router/tree/dev/examples
+   */
+  const navigate = useNavigate();
+  const location = useLocation();
+  const state = location.state as { backgroundLocation?: Location };
+
+  // goto ingredient page when modal is opened & user click on browser url
   useEffect(() => {
-    if (serverData.status === 'idle' && !serverData.success) {
-      dispatch(fetchData());
+    if (state?.backgroundLocation && !popupStore.data) {
+      navigate(location.pathname);
     }
-  }, [dispatch, serverData.status, serverData.success]);
+  }, [state?.backgroundLocation, popupStore.data, navigate, location.pathname]);
 
   return (
     <div className={s['app']}>
       <AppHeader />
 
-      <main className={s['app-content']}>
-        {
-          serverData.status === 'loading' &&
-            <div className={s['app-loading']}>
-              Загружаем приложение...
-            </div>
-        }
-        {
-          serverData.status === 'error' &&
-            <div className={s['app-error']}>
-              Ошибка получения данных!
-              <Button type={'secondary'} htmlType={'reset'} onClick={() => window.location.reload()}>
-                Перегрузить страницу
-              </Button>
-            </div>
-        }
-        {
-          serverData.success &&
-            <DndProvider backend={HTML5Backend}>
-              <BurgerIngredients/>
-              <BurgerConstructor/>
-            </DndProvider>
-        }
-      </main>
+      <Routes location={state?.backgroundLocation || location}>
+        {/*ITEMS*/}
+        <Route path={PAGES.ingredientId} element={<Ingredient />} />
+        <Route path={PAGES.constructor} element={<Constructor />} />
+
+        <Route element={<ProtectedRoutes type={'login'} />}>
+          {/*AUTH*/}
+          <Route path={PAGES.login} element={<Login />} />
+          <Route path={PAGES.register} element={<Register />} />
+          <Route path={PAGES.forgotPassword} element={<ForgotPassword />} />
+          <Route path={PAGES.resetPassword} element={<ResetPassword />} />
+        </Route>
+
+        <Route element={<ProtectedRoutes type={'profile'} />}>
+          {/*PROFILE*/}
+          <Route path={PAGES.profileOrders} element={<ProfileOrders />} />
+          <Route path={PAGES.profile} element={<Profile />} />
+        </Route>
+
+        {/*404*/}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+
+      {/*virtual route (with modal)*/}
+      {state?.backgroundLocation && popupStore.data && (
+        <Routes>
+          <Route path={PAGES.ingredientId} element={
+            <Modal onClose={() => {navigate(PAGES.constructor)}}>
+              <IngredientDetails data={popupStore.data} />
+            </Modal>
+          } />
+        </Routes>
+      )}
     </div>
   );
 }

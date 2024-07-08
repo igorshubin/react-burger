@@ -6,7 +6,7 @@ import {ConstructorListProps, IngredientItemProps} from '../../../utils/props';
 import ConstructorEmpty from './constructor-empty';
 import {isMobileDevice} from '../../../utils/device';
 import {useDrop} from 'react-dnd';
-import {TYPEDEFAULT, TYPEDROP} from '../../../utils/constants';
+import {TYPE_BUN, TYPEDROP} from '../../../utils/constants';
 import {v4 as uuidv4} from 'uuid';
 import ConstructorCard from './constructor-card';
 import update from 'immutability-helper';
@@ -34,7 +34,7 @@ const ConstructorList: FC<ConstructorListProps> = ({bun, ingredients}) => {
    * https://react-dnd.github.io/react-dnd/about
    */
   const orderAdd = (data:IngredientItemProps) => {
-    if (data.type === TYPEDEFAULT) {
+    if (data.type === TYPE_BUN) {
       dispatch(orderAddBun(data));
     } else {
       // save with random id

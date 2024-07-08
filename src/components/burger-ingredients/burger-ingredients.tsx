@@ -3,32 +3,29 @@ import {shallowEqual} from 'react-redux';
 import s from './styles.module.css';
 import clsx from 'clsx';
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components';
-import {TYPEDEFAULT, TYPES} from '../../utils/constants';
+import {TYPE_BUN, TYPES} from '../../utils/constants';
 import Ingredient from './parts/ingredient';
 import {IngredientItemProps} from '../../utils/props';
-import IngredientDetails from '../ingredient-details';
-import Modal from '../modal';
-import {getOrderCounts} from '../../utils/utils';
+import {getOrderCounts} from '../../utils/order';
 import {popupShow} from '../../services/redux/popup-slice';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 
 const BurgerIngredients: FC = () => {
   const dispatch = useAppDispatch();
-  const {apiData, orderData, popupData} = useAppSelector(
+  const {apiStore, orderStore} = useAppSelector(
     state => ({
-      apiData: state.server.data,
-      orderData: state.order,
-      popupData: state.popup,
+      apiStore: state.server.data,
+      orderStore: state.order,
     }),
     shallowEqual
   );
 
-  const [activeTab, setActiveTab] = useState<string>(TYPEDEFAULT);
+  const [activeTab, setActiveTab] = useState<string>(TYPE_BUN);
   const [counts, setCounts] = useState<any>({});
 
   const refs = useRef<any>({});
 
-  useEffect(() => setCounts(getOrderCounts(orderData)), [orderData]);
+  useEffect(() => setCounts(getOrderCounts(orderStore)), [orderStore]);
 
   const showModal = (item:IngredientItemProps) => {
     dispatch(popupShow({
@@ -82,7 +79,7 @@ const BurgerIngredients: FC = () => {
       <div onScroll={handleScroll} className={clsx(s['bi--root'], 'mt-10')}>
         {
           Object.entries(TYPES).map(([id, name]) => {
-            const list = apiData.filter((i:IngredientItemProps) => i.type === id);
+            const list = apiStore.filter((i:IngredientItemProps) => i.type === id);
 
             return (
               <div key={id} ref={el => refs.current[id] = el} className={s['bi--content']}>
@@ -112,13 +109,6 @@ const BurgerIngredients: FC = () => {
           })
         }
       </div>
-
-      {/* INGREDIENT MODAL */}
-      {popupData.data &&
-        <Modal>
-          <IngredientDetails data={popupData.data} />
-        </Modal>
-      }
     </section>
   );
 }

@@ -1,0 +1,24 @@
+
+.auth {
+    width: 480px;
+    max-width: 90%;
+    text-align: center;
+}
+
+.auth-actions {
+    text-align: center;
+    margin-top: calc(var(--offset-base-size) * 20);
+}
+
+.password-form {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 767px) {
+    .auth-actions {
+        margin-top: calc(var(--offset-base-size) * 10);
+    }
+}

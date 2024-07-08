@@ -1,3 +1,23 @@
+import {FormEvent} from 'react';
+
+export type StatusTypes = 'idle'|'loading'|'error';
+
+export interface AppLoaderProps {
+  status: StatusTypes,
+}
+export interface AppContentProps {
+  children: any,
+  layout?: 'default'|'center'|'profile',
+}
+
+export interface ButtonLoaderProps {
+  text: any,
+  status: StatusTypes,
+  success: boolean,
+  type?: 'submit'|'button',
+  disabled?: boolean,
+  onClick?: () => void,
+}
 
 export interface ConstructorListProps {
   bun: IngredientItemProps|null,
@@ -15,8 +35,17 @@ export interface OrderProps {
   total: number
 }
 
+export interface EmptyDataProps {
+  title: string
+}
+
+export interface ProtectedRouteProps {
+  type: 'profile'|'login',
+}
+
 export interface ModalProps {
   children?: any,
+  onOpen?: () => void,
   onClose?: () => void,
 }
 export interface ModalOverlayProps {
@@ -32,6 +61,12 @@ export interface IngredientProps {
   data: IngredientItemProps,
   onClick?: () => void,
   count?: number,
+}
+
+export interface UserFormProps {
+  variant: 'login'|'register'|'profile',
+  onSubmit: (e: FormEvent<HTMLFormElement>) => void,
+  buttonText?: any,
 }
 
 export interface IngredientDetailsProps {

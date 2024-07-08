@@ -37,7 +37,7 @@ export const getOrderTotal = (bun: IngredientItemProps|null, ingredients: Ingred
   return total;
 }
 
-export const checkOrderValid = (order: DataOrderProps) => {
+export const getOrderError = (order: DataOrderProps) => {
   let error = null;
 
   if (!order.ingredients?.length) {
@@ -50,10 +50,3 @@ export const checkOrderValid = (order: DataOrderProps) => {
   return error;
 }
 
-export const checkResponse = (res:Response) => {
-    if (res.ok) {
-      return res.json();
-    }
-
-    return Promise.reject(res);
-}
