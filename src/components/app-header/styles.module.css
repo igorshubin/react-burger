@@ -25,10 +25,27 @@
     text-decoration: none;
     border-radius: 40px;
     border: none;
+    min-height: 64px;
+    padding-left: calc(var(--offset-base-size) * 5);
+    padding-right: calc(var(--offset-base-size) * 5);
 }
+
 .app-header--link_primary {
     color: var(--text-primary-color);
 }
+
+.app-header--link svg {
+    padding: 3px;
+}
+
+.app-header--link_auth svg {
+    box-shadow: 0 0 0 1px var(--text-inactive-color);
+    border-radius: 50%;
+}
+.app-header--link_auth.app-header--link_primary svg {
+    box-shadow: 0 0 0 1px var(--text-primary-color);
+}
+
 @media (hover: hover) {
     .app-header--link:hover {
         color: var(--text-primary-color);
@@ -49,6 +66,12 @@
     }
 
     .app-header--auth {
-        margin: 15px 0 0 0;
+        margin: 5px 0 0 0;
+    }
+
+    .app-header--link {
+        min-height: 40px;
+        padding-left: calc(var(--offset-base-size) * 2);
+        padding-right: calc(var(--offset-base-size) * 2);
     }
 }

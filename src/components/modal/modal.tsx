@@ -9,7 +9,7 @@ import {shallowEqual} from 'react-redux';
 import {popupHide} from '../../services/redux/popup-slice';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 
-const Modal: FC<ModalProps> = ({children, onClose}) => {
+const Modal: FC<ModalProps> = ({children, onClose, onOpen}) => {
   const dispatch = useAppDispatch();
   const {popupShow, popupTitle} = useAppSelector(
     state => ({
@@ -18,6 +18,12 @@ const Modal: FC<ModalProps> = ({children, onClose}) => {
     }),
     shallowEqual
   );
+
+  useEffect(() => {
+    if (popupShow && onOpen) {
+      onOpen();
+    }
+  }, [popupShow, onOpen]);
 
   const modalClose = useCallback(() => {
     dispatch(popupHide());

@@ -1,0 +1,19 @@
+
+.app-loading {
+    margin: calc(var(--offset-base-size) * 10) auto;
+    color: var(--text-inactive-color);
+    font-size: 12px;
+    text-align: center;
+    width: 350px;
+}
+
+.app-error {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 350px;
+    margin: calc(var(--offset-base-size) * 10) auto;
+    color: var(--colors-interface-error);
+}

@@ -1,59 +1,72 @@
-import {FC, useState} from 'react';
+import {FC, useEffect, useState} from 'react';
+import {useLocation, Link, NavLink} from 'react-router-dom';
 import s from './styles.module.css';
 import clsx from 'clsx';
 
 import {Logo} from "@ya.praktikum/react-developer-burger-ui-components";
 import {BurgerIcon, ListIcon, ProfileIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-import {TIconProps} from '@ya.praktikum/react-developer-burger-ui-components/dist/ui/icons/utils';
+
+import {PAGES} from '../../utils/constants';
+import {useAppSelector} from '../../hooks';
 
 const AppHeader: FC = () => {
-  const [btnConstrType, setBtnConstrType] = useState<TIconProps['type']>('primary');
-  const [btnListType, setBtnListType] = useState<TIconProps['type']>('secondary');
-  const [btnAuthType, setBtnAuthType] = useState<TIconProps['type']>('secondary');
+  const [active, setActive] = useState<string|null>(null);
+  const {auth} = useAppSelector(state => state.user);
 
-  const handleBtnConstrClick = () => {
-    setBtnConstrType('primary');
-  }
-  const handleBtnListClick = () => {
-    setBtnListType('primary');
-  }
-  const handleBtnAuthClick = () => {
-    setBtnAuthType('primary');
-  }
+  const location = useLocation();
+
+  useEffect(() => {
+    switch (location.pathname) {
+      case PAGES.constructor:
+      case PAGES.ingredientId:
+        setActive('constructor');
+        break;
+      case PAGES.profileOrders:
+        setActive('list')
+        break;
+      case PAGES.profile:
+        setActive('profile');
+        break;
+      default:
+        setActive(null);
+    }
+  }, [location.pathname]);
 
   return(
     <header className={clsx(s['app-header'], 'pt-4', 'pb-4')}>
-      <div className={s['app-header--info']}>
-        <button
-          className={clsx(s['app-header--link'], 'p-5', s[`app-header--link_${btnConstrType}`])}
-          onClick={handleBtnConstrClick}
-        >
-          <BurgerIcon type={btnConstrType} />
-          <span className='ml-2'>Конструктор</span>
-        </button>
 
-        <button
-          className={clsx(s['app-header--link'], 'p-5', 'ml-2' , s[`app-header--link_${btnListType}`])}
-          onClick={handleBtnListClick}
+      <div className={s['app-header--info']}>
+        <NavLink
+          to={PAGES.constructor}
+          className={clsx(s['app-header--link'], (active === 'constructor' && s['app-header--link_primary']))}
         >
-          <ListIcon type={btnListType}/>
+          <BurgerIcon type={active === 'constructor'? 'primary' : 'secondary'} />
+          <span className='ml-2'>Конструктор</span>
+        </NavLink>
+
+        <NavLink
+          to={auth? PAGES.profileOrders : PAGES.login}
+          className={clsx(s['app-header--link'], 'ml-2' , (active === 'list' && s['app-header--link_primary']))}
+        >
+          <ListIcon type={active === 'list'? 'primary' : 'secondary'}/>
           <span className='ml-2'>Лента заказов</span>
-        </button>
+        </NavLink>
       </div>
 
-      <a href='/' className={s['app-header--logo']} title='Galaxy Burger PitStop'>
+      <Link to={PAGES.constructor} className={s['app-header--logo']} title='Galaxy Burger PitStop'>
         <Logo />
-      </a>
+      </Link>
 
       <div className={s['app-header--auth']}>
-        <button
-          className={clsx(s['app-header--link'], 'p-5', s[`app-header--link_${btnAuthType}`])}
-          onClick={handleBtnAuthClick}
+        <NavLink
+          to={auth? PAGES.profile : PAGES.login}
+          className={clsx(s['app-header--link'], (auth && s[`app-header--link_auth`]), (active === 'profile' && s['app-header--link_primary']))}
         >
-          <ProfileIcon type={btnAuthType}/>
+          <ProfileIcon type={active === 'profile'? 'primary' : 'secondary'} />
           <span className='ml-2'>Личный кабинет</span>
-        </button>
+        </NavLink>
       </div>
+
     </header>
   );
 }

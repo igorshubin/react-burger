@@ -1,6 +1,7 @@
-import {ErrorInfo, Component, ReactNode} from 'react';
+import React, {ErrorInfo, Component, ReactNode} from 'react';
 
 import s from './styles.module.css';
+import {Button} from '@ya.praktikum/react-developer-burger-ui-components';
 
 export default class ErrorBoundary extends Component<
   {children: ReactNode; errorBody?: ReactNode},
@@ -32,9 +33,9 @@ export default class ErrorBoundary extends Component<
         <div className={s['error-boundary']}>
           <h2 className={s['error-boundary--title']}>Упс, чтото пошло не так...</h2>
           <p className={s['error-boundary--content']}>Мы уже работаем над проблемой.</p>
-          <button className={s['error-boundary--button']} onClick={() => window.location.reload()}>
+          <Button type={'secondary'} htmlType={'reset'} onClick={() => window.location.reload()}>
             Перегрузить страницу
-          </button>
+          </Button>
         </div>
       );
     }

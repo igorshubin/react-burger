@@ -1,0 +1,26 @@
+
+.app-content {
+  flex: 1;
+  display: flex;
+  flex-flow: column;
+}
+
+.app-content_center {
+  align-items: center;
+  justify-content: center;
+}
+
+.app-content_default {
+
+}
+
+.app-content_profile {
+
+}
+
+@media (max-width: 767px) {
+  .app-content_center {
+    padding-top: calc(var(--offset-base-size) * 6);
+    justify-content: flex-start;
+  }
+}

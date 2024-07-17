@@ -1,6 +1,6 @@
 import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch, RootState} from '../services/redux';
-import {useCallback, useRef} from 'react';
+import {useEffect, useState} from 'react';
 
 /**
  * Use throughout your app instead of plain `useDispatch` and `useSelector`
@@ -9,17 +9,18 @@ import {useCallback, useRef} from 'react';
 export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
 export const useAppSelector = useSelector.withTypes<RootState>();
 
-export const useThrottle = (callback: (args:any) => void, delay = 1000) => {
-  const isThrottled = useRef(false);
+export const useDebounce = (cb:any, delay = 1000) => {
+  const [val, setVal] = useState(cb);
 
-  return useCallback((...args: any) => {
-    if (isThrottled.current) {
-      return;
-    }
+  useEffect(() => {
+    const to = setTimeout(() => {
+      setVal(cb);
+    }, delay);
 
-    callback(args);
-    isThrottled.current = true;
+    return () => {
+      clearTimeout(to);
+    };
+  }, [cb, delay]);
 
-    setTimeout(() => isThrottled.current = false, delay);
-  }, [callback, delay]);
+  return val;
 }
