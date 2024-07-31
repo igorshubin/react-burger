@@ -1,17 +1,21 @@
-import {FormEvent} from 'react';
+import {FormEvent, ReactNode} from 'react';
 
 export type StatusTypes = 'idle'|'loading'|'error';
+
+export type ObjStrNumType = {[key: string]: number}
+
+export type ObjStrStrType = {[key: string]: string}
 
 export interface AppLoaderProps {
   status: StatusTypes,
 }
 export interface AppContentProps {
-  children: any,
+  children: ReactNode,
   layout?: 'default'|'center'|'profile',
 }
 
 export interface ButtonLoaderProps {
-  text: any,
+  text: ObjStrStrType,
   status: StatusTypes,
   success: boolean,
   type?: 'submit'|'button',
@@ -44,7 +48,7 @@ export interface ProtectedRouteProps {
 }
 
 export interface ModalProps {
-  children?: any,
+  children?: ReactNode,
   onOpen?: () => void,
   onClose?: () => void,
 }
@@ -57,20 +61,19 @@ export interface OrderDetailsProps {
   orderName: string|null,
 }
 
-export interface IngredientProps {
+export type IngredientDetailsProps = {
   data: IngredientItemProps,
+}
+
+export type IngredientProps = {
   onClick?: () => void,
   count?: number,
-}
+} & IngredientDetailsProps;
 
 export interface UserFormProps {
   variant: 'login'|'register'|'profile',
   onSubmit: (e: FormEvent<HTMLFormElement>) => void,
-  buttonText?: any,
-}
-
-export interface IngredientDetailsProps {
-  data: IngredientItemProps,
+  buttonText: ObjStrStrType,
 }
 
 export interface IngredientItemProps {
@@ -88,3 +91,19 @@ export interface IngredientItemProps {
   image_large: string,
   __v: number,
 }
+
+export interface RequestErrorProps {
+  status: number,
+  redirected: boolean,
+  type: string,
+  statusText: string,
+}
+
+export type TServerResponse<T> = {
+  success: boolean
+} & T;
+
+export type TRefreshResponse = TServerResponse<{
+  refreshToken: string,
+  accessToken: string,
+}>

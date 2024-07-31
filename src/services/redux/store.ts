@@ -106,9 +106,3 @@ export interface DataOrderProps {
   number: number|null
 }
 
-export interface RequestErrorProps {
-  status: number,
-  statusText: string,
-  redirected: string,
-  type: string,
-}

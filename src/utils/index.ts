@@ -1,4 +1,5 @@
 import {DataUserProps} from '../services/redux/store';
+import {ObjStrStrType} from './props';
 
 
 /* LOCALSTORAGE */
@@ -19,8 +20,8 @@ export const ls = (key:string, val?: string|null) => {
  * Get changed list from userStore.api which values not equal to values in userStore.data,
  * all values must not be empty and valid
  */
-export const getProfileChangedData = ({api, data}: DataUserProps, isChanged = false) => {
-  let changed:any = {};
+export const getProfileChangedData = ({api, data}: DataUserProps) => {
+  let changed:ObjStrStrType = {};
 
   Object.keys(api).forEach(k => {
     const key = k as keyof typeof api;
@@ -30,7 +31,7 @@ export const getProfileChangedData = ({api, data}: DataUserProps, isChanged = fa
       data[key]?.length &&
       api[key] !== data[key]
     ) {
-      changed[key] = data[key];
+      changed[key] = data[key] as string;
     }
   });
 
@@ -39,22 +40,5 @@ export const getProfileChangedData = ({api, data}: DataUserProps, isChanged = fa
     changed['password'] = data.password;
   }
 
-  return (isChanged)? Boolean(Object.keys(changed).length) : changed;
-}
-
-export const shallowEqualObjects = (obj1:any, obj2:any) => {
-  const keys1 = Object.keys(obj1);
-  const keys2 = Object.keys(obj2);
-
-  if (keys1.length !== keys2.length) {
-    return false;
-  }
-
-  for (let key of keys1) {
-    if (obj1[key] !== obj2[key]) {
-      return false;
-    }
-  }
-
-  return true;
+  return changed;
 }

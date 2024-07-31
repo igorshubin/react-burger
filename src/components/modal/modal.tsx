@@ -1,4 +1,4 @@
-import {FC, useEffect, useCallback} from 'react';
+import {FC, useEffect, useCallback, ReactPortal} from 'react';
 import {createPortal} from 'react-dom';
 import s from './styles.module.css';
 import {ModalProps} from '../../utils/props';
@@ -9,7 +9,7 @@ import {shallowEqual} from 'react-redux';
 import {popupHide} from '../../services/redux/popup-slice';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 
-const Modal: FC<ModalProps> = ({children, onClose, onOpen}) => {
+const Modal: FC<ModalProps> = ({children, onClose, onOpen}): ReactPortal|null => {
   const dispatch = useAppDispatch();
   const {popupShow, popupTitle} = useAppSelector(
     state => ({
@@ -42,11 +42,7 @@ const Modal: FC<ModalProps> = ({children, onClose, onOpen}) => {
     };
   }, [modalClose]);
 
-  return (
-    <>
-      {
-        popupShow &&
-        createPortal(
+  return popupShow? createPortal(
           <>
             <div className={clsx(s['modal'], 'p-10')}>
               <div className={clsx(s['modal--header'], 'text', 'text_type_main-large')}>
@@ -64,10 +60,7 @@ const Modal: FC<ModalProps> = ({children, onClose, onOpen}) => {
             <ModalOverlay modalClose={modalClose}/>
           </>,
           document.getElementById('react-modals') as HTMLElement
-        )
-      }
-    </>
-  );
+        ) : null;
 }
 
 export default Modal;

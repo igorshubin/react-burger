@@ -5,10 +5,11 @@ import {ls} from '../../utils';
 import {API_DEBUG, API_URL, PAGES, TOKENS} from '../../utils/constants';
 import {userUpdate} from '../../services/redux/user-slice';
 import {fetchWithRefresh} from '../../utils/request';
-import {ProtectedRouteProps, StatusTypes} from '../../utils/props';
+import {ProtectedRouteProps, StatusTypes, TServerResponse} from '../../utils/props';
 import AppLoader from '../../common/app-loader';
 import {shallowEqual} from 'react-redux';
 import {getOrderError} from '../../utils/order';
+import {UserProps} from '../../services/redux/store';
 
 const ProtectedRoutes: FC<ProtectedRouteProps> = ({type}) => {
   const dispatch = useAppDispatch();
@@ -30,15 +31,15 @@ const ProtectedRoutes: FC<ProtectedRouteProps> = ({type}) => {
         const refreshToken = ls(TOKENS.refresh);
 
         if (accessToken && refreshToken) {
-          const res = await fetchWithRefresh(`${API_URL}/auth/user`,
+          const res = await fetchWithRefresh<TServerResponse<UserProps>>(`${API_URL}/auth/user`,
   {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
-              'authorization': accessToken,
+              'Authorization': accessToken,
             }
           },
-          ).catch((e:any) => {
+          ).catch((e:Error) => {
             setStatus('idle');
             if (API_DEBUG) {
               console.log('refreshError', e);

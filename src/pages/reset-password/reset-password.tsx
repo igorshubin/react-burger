@@ -1,4 +1,4 @@
-import React, {FC, FormEvent, useEffect, useState} from 'react';
+import React, {ChangeEvent, FC, FormEvent, useEffect, useState} from 'react';
 import {Link, Navigate, useNavigate} from 'react-router-dom';
 import s from './styles.module.css';
 import {useAppDispatch, useAppSelector, useDebounce} from '../../hooks';
@@ -38,7 +38,7 @@ const ResetPassword: FC = () => {
   const [valid, setValid] = useState(false);
 
   // 1. get raw user typed value
-  const handleChange = (e:any, key: string) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>, key: string) => {
     setData({
       ...data,
       [key]: e.currentTarget.value,
@@ -109,11 +109,11 @@ const ResetPassword: FC = () => {
           {!passwordStore.reset &&
             <div>
               <form onSubmit={handleSubmit} method={'post'} className={s['password-form']}>
-                <PasswordInput extraClass={'mb-6'} placeholder={'Введите новый пароль'} value={data.password ?? ''} onChange={(e) => handleChange(e, 'password')}/>
+                <PasswordInput extraClass={'mb-6'} placeholder={'Введите новый пароль'} value={data.password ?? ''} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, 'password')}/>
 
                 {
                   // @ts-ignore
-                  <Input extraClass={'mb-6'} placeholder={'Введите код из письма'} value={data.token ?? ''} onChange={(e) => handleChange(e, 'token')}/>
+                  <Input extraClass={'mb-6'} placeholder={'Введите код из письма'} value={data.token ?? ''} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, 'token')}/>
                 }
 
                 {/*ERROR*/}

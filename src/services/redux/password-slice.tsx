@@ -15,12 +15,6 @@ export const passwordSlice = createSlice({
   name: 'password',
   initialState: DataDefault.password,
   reducers: {
-    passwordUpdateData: (state, action) => {
-      return {
-        ...state,
-        ...action.payload,
-      };
-    },
     passwordDefault: () => {
       return DataDefault.password;
     },
@@ -63,6 +57,6 @@ export const passwordSlice = createSlice({
   }
 });
 
-export const { passwordUpdateData, passwordDefault } = passwordSlice.actions;
+export const { passwordDefault } = passwordSlice.actions;
 
 export default passwordSlice.reducer;

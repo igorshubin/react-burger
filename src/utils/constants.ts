@@ -2,7 +2,7 @@
 
 export const API_DEBUG = false;
 export const API_URL = 'https://norma.nomoreparties.space/api';
-export const API_ERRORS:any = {
+export const API_ERRORS:{[key: number]: string} = {
   401: 'Ошибка авторизации. Укажите правильные данные.',
   403: 'Ошибка регистрации. Пользователь уже существует.',
   404: 'Страница не найдена.',
@@ -35,12 +35,6 @@ export enum PAGES {
   profileOrders = '/profile/orders',
   profileOrder = '/profile/orders/:number',
 }
-
-export const PAGES_FOR_GUEST = [
-  {path: PAGES.login},
-  {path: PAGES.register},
-  {path: PAGES.forgotPassword},
-];
 
 export enum TYPES {
   bun = 'Булки',

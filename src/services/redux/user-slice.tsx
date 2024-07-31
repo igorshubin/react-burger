@@ -40,9 +40,6 @@ export const userSlice = createSlice({
         error: null,
       };
     },
-    userDefault: () => {
-      return DataDefault.user;
-    },
   },
   extraReducers(builder) {
     builder
@@ -104,6 +101,6 @@ export const userSlice = createSlice({
   }
 });
 
-export const { userUpdateData, userUpdate, userNewPage, userDefault } = userSlice.actions;
+export const { userUpdateData, userUpdate, userNewPage} = userSlice.actions;
 
 export default userSlice.reducer;

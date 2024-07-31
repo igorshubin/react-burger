@@ -1,8 +1,8 @@
 import {DataOrderProps} from '../services/redux/store';
-import {IngredientItemProps} from './props';
+import {IngredientItemProps, ObjStrNumType} from './props';
 
 export const getOrderCounts = (order: DataOrderProps) => {
-  let counter:any = {};
+  let counter:ObjStrNumType = {};
 
   if (order.ingredients?.length) {
     order.ingredients.forEach((i:IngredientItemProps) => {
