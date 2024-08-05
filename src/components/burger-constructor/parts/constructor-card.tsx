@@ -8,6 +8,7 @@ import { useDrag, useDrop } from 'react-dnd';
 import {TYPESORT} from '../../../utils/constants';
 import {orderDeleteIngredient} from '../../../services/redux/order-slice';
 import {useAppDispatch} from '../../../hooks';
+import type {DragSourceMonitor} from 'react-dnd/src/types';
 
 interface DragItem {
   index: number
@@ -69,7 +70,7 @@ const ConstructorCard: FC<ConstructorCardProps> = ({id, item, index, moveCard}) 
     item: () => {
       return { id, index }
     },
-    collect: (monitor: any) => ({
+    collect: (monitor: DragSourceMonitor) => ({
       isDragging: monitor.isDragging(),
     }),
   });
@@ -77,7 +78,7 @@ const ConstructorCard: FC<ConstructorCardProps> = ({id, item, index, moveCard}) 
   const opacity = isDragging ? 0 : 1
   drag(drop(ref));
 
-  const handleDeleteElement = (id:any) => dispatch(orderDeleteIngredient({id}));
+  const handleDeleteElement = (id?:string) => dispatch(orderDeleteIngredient({id}));
 
   return (
     <div ref={ref} style={{ opacity }} data-handler-id={handlerId} key={id} className={clsx(s['constructor-list--item'], 'mb-4')}>

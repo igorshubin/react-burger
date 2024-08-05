@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import {TYPE_BUN, TYPES} from '../../utils/constants';
 import Ingredient from './parts/ingredient';
-import {IngredientItemProps} from '../../utils/props';
+import {IngredientItemProps, ObjStrNumType} from '../../utils/props';
 import {getOrderCounts} from '../../utils/order';
 import {popupShow} from '../../services/redux/popup-slice';
 import {useAppDispatch, useAppSelector} from '../../hooks';
@@ -21,8 +21,9 @@ const BurgerIngredients: FC = () => {
   );
 
   const [activeTab, setActiveTab] = useState<string>(TYPE_BUN);
-  const [counts, setCounts] = useState<any>({});
+  const [counts, setCounts] = useState<ObjStrNumType>({});
 
+  //TODO: const refs = useRef<{[key: string]: RefObject<HTMLDivElement>}>({});
   const refs = useRef<any>({});
 
   useEffect(() => setCounts(getOrderCounts(orderStore)), [orderStore]);

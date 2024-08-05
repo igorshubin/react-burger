@@ -1,8 +1,8 @@
-import {RequestErrorProps} from '../services/redux/store';
 import {API_DEBUG, API_ERRORS, API_URL, TOKENS} from './constants';
 import {GetThunkAPI} from '@reduxjs/toolkit';
 import {AsyncThunkConfig} from '@reduxjs/toolkit/dist/createAsyncThunk';
 import {ls} from "./index";
+import {ObjStrStrType, RequestErrorProps, TRefreshResponse} from './props';
 
 export const apiRequest = async (data:any, thunkApi:GetThunkAPI<AsyncThunkConfig>, apiPrefix: string) => {
   if (API_DEBUG) {
@@ -14,7 +14,7 @@ export const apiRequest = async (data:any, thunkApi:GetThunkAPI<AsyncThunkConfig
   }
 
   // prepare url (based on apiPrefix)
-  const URLS:any = {
+  const URLS:ObjStrStrType = {
     'user/api': `${API_URL}/auth/${data.action}`,
     'password/api': `${API_URL}/${data.action}`,
     'order/api': `${API_URL}/orders`,
@@ -25,7 +25,7 @@ export const apiRequest = async (data:any, thunkApi:GetThunkAPI<AsyncThunkConfig
       'Content-Type': 'application/json',
     };
   if (data[TOKENS.access]) {
-    headers['authorization'] = data[TOKENS.access];
+    headers['Authorization'] = data[TOKENS.access];
   }
 
   return await fetch(URLS[apiPrefix], {
@@ -38,6 +38,8 @@ export const apiRequest = async (data:any, thunkApi:GetThunkAPI<AsyncThunkConfig
     .then((res) => checkResponse(res, thunkApi))
     .then(data => data);
 }
+
+
 
 /* REQUESTS */
 export const checkResponse = (res:Response, thunkApi:GetThunkAPI<AsyncThunkConfig>) => {
@@ -56,34 +58,14 @@ export const checkResponse = (res:Response, thunkApi:GetThunkAPI<AsyncThunkConfi
     redirected: res.redirected,
     type: res.type,
     statusText,
-  });
-}
-
-/**
- * @deprecated Use checkResponse
- * @param err
- * @param thunkApi
- */
-export const checkError = (err:any, thunkApi:GetThunkAPI<AsyncThunkConfig>) => {
-  if (API_DEBUG) {
-    console.error('checkError', err);
-  }
-
-  const statusText = API_ERRORS[err.status] ?? err.statusText ?? 'Неопознанная ошибка.';
-
-  return thunkApi.rejectWithValue({
-    statusText,
-    status: err.status,
-    redirected: err.redirected,
-    type: err.type,
   } as RequestErrorProps);
 }
 
-
 // https://app.pachca.com/chats/9643197?message=278928537
-export const getResponse = (res:Response) => {
-  return res.ok ? res.json() : res.json().then((err:any) => Promise.reject(err));
+export const getResponse = <Type>(res:Response): Promise<Type> => {
+  return res.ok ? res.json() : res.json().then((err:Error) => Promise.reject(err));
 };
+
 export const refreshToken = () => {
   return fetch(`${API_URL}/auth/token`, {
     method: 'POST',
@@ -94,7 +76,7 @@ export const refreshToken = () => {
       token: ls(TOKENS.refresh),
     }),
   })
-    .then(getResponse)
+    .then((res) => getResponse<TRefreshResponse>(res))
     .then((refreshData) => {
       if (!refreshData.success) {
         return Promise.reject(refreshData);
@@ -105,21 +87,27 @@ export const refreshToken = () => {
 
       return refreshData;
     })
-
 };
-export const fetchWithRefresh = async (url:string, options:any) => {
+
+
+interface fetchOptionsType {
+  method: string,
+  headers: HeadersInit & {Authorization?: string},
+}
+
+export const fetchWithRefresh = async <T>(url:string, options:fetchOptionsType): Promise<any> => {
   try {
 
-    const res = await fetch(url, options);
-    return await getResponse(res);
+    const res: Response = await fetch(url, options);
+    return await getResponse<T>(res);
 
-  } catch (err:any) {
+  } catch (err) {
 
-    if (err.message === 'jwt expired') {
-      const refreshData = await refreshToken().catch((e:any) => Promise.reject(e))
+    if ((err as {message: string}).message === 'jwt expired') {
+      const refreshData = await refreshToken().catch((e:Error) => Promise.reject(e))
 
       if (refreshData && refreshData[TOKENS.access]) {
-        options.headers.authorization = refreshData[TOKENS.access];
+        options.headers.Authorization = refreshData[TOKENS.access];
         const res = await fetch(url, options);
         return await getResponse(res);
       }

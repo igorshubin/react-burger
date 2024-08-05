@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useMemo, useState} from 'react';
+import React, {ChangeEvent, FC, useEffect, useMemo, useState} from 'react';
 import s from './styles.module.css';
 import ButtonLoader from '../../common/button-loader';
 import {Input, EmailInput, PasswordInput, Button} from '@ya.praktikum/react-developer-burger-ui-components';
@@ -34,7 +34,7 @@ const UserForm: FC<UserFormProps> = ({variant, onSubmit, buttonText}) => {
   const [valid, setValid] = useState(false);
 
   // 1. get raw user typed value
-  const handleChange = (e:any, key: string) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>, key: string) => {
     setData({
       ...data,
       [key]: e.currentTarget.value,
@@ -88,7 +88,8 @@ const UserForm: FC<UserFormProps> = ({variant, onSubmit, buttonText}) => {
   const [profileIsChanged, setProfileIsChanged] = useState(false);
   useEffect(() => {
     if (userStore.auth) {
-      const isChanged = getProfileChangedData(userStore, true);
+      const changed = getProfileChangedData(userStore);
+      const isChanged = Boolean(Object.keys(changed).length);
       setProfileIsChanged(isChanged);
       setValid(isChanged);
     }
@@ -106,15 +107,15 @@ const UserForm: FC<UserFormProps> = ({variant, onSubmit, buttonText}) => {
 
 
   return (
-    <form onSubmit={(e) => onSubmit(e)} method={'post'} className={s['user-form']}>
+    <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => onSubmit(e)} method={'post'} className={s['user-form']}>
 
       {/*INPUTS*/}
       {['register', 'profile'].includes(variant) &&
         // @ts-ignore
-        <Input icon={userStore.auth && 'EditIcon'} extraClass={'mb-6'} placeholder={'Имя'} value={data.name ?? ''} onChange={(e) => handleChange(e, 'name')}/>
+        <Input icon={userStore.auth && 'EditIcon'} extraClass={'mb-6'} placeholder={'Имя'} value={data.name ?? ''} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, 'name')}/>
       }
-      <EmailInput isIcon={userStore.auth} extraClass={'mb-6'} placeholder={userStore.auth? 'Логин' : 'E-mail'} value={data.email ?? ''} onChange={(e) => handleChange(e, 'email')}/>
-      <PasswordInput extraClass={'mb-6'} placeholder={'Пароль'} value={data.password ?? ''} onChange={(e) => handleChange(e, 'password')}/>
+      <EmailInput isIcon={userStore.auth} extraClass={'mb-6'} placeholder={userStore.auth? 'Логин' : 'E-mail'} value={data.email ?? ''} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, 'email')}/>
+      <PasswordInput extraClass={'mb-6'} placeholder={'Пароль'} value={data.password ?? ''} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, 'password')}/>
 
 
       {/*ERROR*/}

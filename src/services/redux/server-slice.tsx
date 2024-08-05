@@ -18,24 +18,6 @@ export const serverSlice = createSlice({
   name: 'server',
   initialState: DataDefault.server,
   reducers: {
-    dataServer: (state, action) => {
-      return action.payload;
-    },
-    dataDefault: () => {
-      return DataDefault.server;
-    },
-    dataStatus: (state, action) => {
-      return {
-        ...state,
-        status: action.payload
-      };
-    },
-    dataSuccess: (state, action) => {
-      return {
-        ...state,
-        success: action.payload
-      };
-    },
   },
   extraReducers(builder) {
     builder
@@ -65,7 +47,5 @@ export const serverSlice = createSlice({
       });
   }
 });
-
-export const { dataServer, dataDefault, dataStatus, dataSuccess } = serverSlice.actions;
 
 export default serverSlice.reducer;

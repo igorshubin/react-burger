@@ -34,7 +34,7 @@ export const orderSlice = createSlice({
       state.error = null;
     },
 
-    orderClear: (state) => {
+    orderClear: () => {
       return DataDefault.order;
     },
   },
