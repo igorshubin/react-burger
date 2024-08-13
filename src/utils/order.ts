@@ -1,5 +1,5 @@
 import {DataOrderProps} from '../services/redux/store';
-import {IngredientItemProps, ObjStrNumType} from './props';
+import {IngredientItemProps, ObjStrNumType, OrderItemProps, OrderServerProps, StatusTypes} from './props';
 
 export const getOrderCounts = (order: DataOrderProps) => {
   let counter:ObjStrNumType = {};
@@ -50,3 +50,44 @@ export const getOrderError = (order: DataOrderProps) => {
   return error;
 }
 
+// join list of orders with FULL INGREDIENTS
+export const getOrdersIngredients = (ordersData: OrderServerProps[], ingredientsData: IngredientItemProps[], reverseSort = false) => {
+  let orders:OrderItemProps[] = [];
+
+  ordersData.forEach(order => {
+    let items:IngredientItemProps[] = [];
+
+    // validate order data
+    if (orderIsValid(order)) {
+      order.ingredients.forEach(id => {
+        const ingr = ingredientsData.find(i => i._id === id);
+        // TODO: check if id not found in list
+        if (ingr) {
+          items.push(ingr);
+        }
+      });
+
+      if (reverseSort) {
+        orders.unshift({
+          ...order,
+          items
+        });
+      } else {
+        orders.push({
+          ...order,
+          items
+        });
+      }
+    }
+  });
+
+  return orders;
+}
+
+export const ordersDataEmpty = (status: StatusTypes, orders: OrderItemProps[]): boolean => {
+  return ['idle', 'closed'].includes(status) && !orders.length;
+}
+
+export const orderIsValid = (order: OrderServerProps): boolean => {
+  return !!(order.ingredients.length && order.name.length && order._id.length && order.number);
+}

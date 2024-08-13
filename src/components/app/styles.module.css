@@ -6,6 +6,7 @@
 }
 
 .app {
+  box-sizing: border-box;
   flex: 1;
   display: flex;
   flex-flow: column;
@@ -14,3 +15,8 @@
   max-width: 1240px;
 }
 
+@media (max-width: 1250px) {
+  .app {
+    padding: 0 calc(var(--offset-base-size) * 4);
+  }
+}

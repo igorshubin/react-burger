@@ -3,8 +3,9 @@ import {GetThunkAPI} from '@reduxjs/toolkit';
 import {AsyncThunkConfig} from '@reduxjs/toolkit/dist/createAsyncThunk';
 import {ls} from "./index";
 import {ObjStrStrType, RequestErrorProps, TRefreshResponse} from './props';
+import {ApiDataType} from '../services/redux/store';
 
-export const apiRequest = async (data:any, thunkApi:GetThunkAPI<AsyncThunkConfig>, apiPrefix: string) => {
+export const apiRequest = async (data:ApiDataType, thunkApi:GetThunkAPI<AsyncThunkConfig>, apiPrefix: string) => {
   if (API_DEBUG) {
     console.group('apiRequest')
     console.log('apiPrefix', apiPrefix);
@@ -17,9 +18,15 @@ export const apiRequest = async (data:any, thunkApi:GetThunkAPI<AsyncThunkConfig
   const URLS:ObjStrStrType = {
     'user/api': `${API_URL}/auth/${data.action}`,
     'password/api': `${API_URL}/${data.action}`,
-    'order/api': `${API_URL}/orders`,
+    'order/api': `${API_URL}/orders`,   // post
+    'orders/api': `${API_URL}/orders`,  // get
   }
+  let url = URLS[apiPrefix];
 
+  // request with primary key (appended to url)
+  if (data.key) {
+    url += '/' + data.key;
+  }
   // prepare headers
   let headers:HeadersInit = {
       'Content-Type': 'application/json',
@@ -28,7 +35,7 @@ export const apiRequest = async (data:any, thunkApi:GetThunkAPI<AsyncThunkConfig
     headers['Authorization'] = data[TOKENS.access];
   }
 
-  return await fetch(URLS[apiPrefix], {
+  return await fetch(url, {
     headers,
     method: data.method ?? 'POST',
     body: (data.body)? JSON.stringify({

@@ -1,5 +1,5 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {DataDefault, UserDefault} from './store';
+import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {DataDefault, DataUserProps, ApiDataType, UserDefault, UserProps} from './store';
 import {API_DEBUG, TOKENS} from '../../utils/constants';
 import {apiRequest} from '../../utils/request';
 import {ls} from '../../utils';
@@ -10,13 +10,13 @@ import {ls} from '../../utils';
  * https://redux-toolkit.js.org/api/createAsyncThunk#handling-thunk-results
  */
 const userApiPrefix = 'user/api';
-export const userApi = createAsyncThunk(userApiPrefix, async (data:any, thunkApi) => apiRequest(data, thunkApi, userApiPrefix));
+export const userApi= createAsyncThunk(userApiPrefix, async (data: ApiDataType, thunkApi)=> apiRequest(data, thunkApi, userApiPrefix));
 
 export const userSlice = createSlice({
   name: 'user',
   initialState: DataDefault.user,
   reducers: {
-    userUpdateData: (state, action) => {
+    userUpdateData: (state, action: PayloadAction<Partial<UserProps>>) => {
       return {
         ...state,
         data: {
@@ -25,7 +25,7 @@ export const userSlice = createSlice({
         },
       };
     },
-    userUpdate: (state, action) => {
+    userUpdate: (state, action: PayloadAction<Partial<DataUserProps>>) => {
       return {
         ...state,
         ...action.payload,

@@ -1,6 +1,6 @@
 import {FormEvent, ReactNode} from 'react';
 
-export type StatusTypes = 'idle'|'loading'|'error';
+export type StatusTypes = 'idle'|'loading'|'error'|'closed';
 
 export type ObjStrNumType = {[key: string]: number}
 
@@ -11,7 +11,7 @@ export interface AppLoaderProps {
 }
 export interface AppContentProps {
   children: ReactNode,
-  layout?: 'default'|'center'|'profile',
+  layout?: 'default'|'center'|'profile'|'feed',
 }
 
 export interface ButtonLoaderProps {
@@ -64,6 +64,23 @@ export interface OrderDetailsProps {
 export type IngredientDetailsProps = {
   data: IngredientItemProps,
 }
+export type ProfileOrderProps = {
+  order: OrderItemProps,
+  variant?: 'profile'|'feed',
+  onClick?: () => void,
+}
+export type ProfileOrderDetailsProps = {
+  order: OrderItemProps,
+}
+export type ProfileOrderDetailsItemsProps = Record<
+  OrderItemProps['_id'],
+  {
+  name: string,
+  image: string,
+  type: string,
+  price: number,
+  count: number,
+}>
 
 export type IngredientProps = {
   onClick?: () => void,
@@ -74,6 +91,22 @@ export interface UserFormProps {
   variant: 'login'|'register'|'profile',
   onSubmit: (e: FormEvent<HTMLFormElement>) => void,
   buttonText: ObjStrStrType,
+}
+
+// server orders with ingredients ids
+export interface OrderServerProps {
+  _id: string,
+  ingredients: string[],
+  status: string,
+  name: string,
+  createdAt: Date,
+  updatedAt: Date,
+  number: number
+}
+
+// local orders with full ingredients
+export interface OrderItemProps extends OrderServerProps {
+  items: IngredientItemProps[],
 }
 
 export interface IngredientItemProps {

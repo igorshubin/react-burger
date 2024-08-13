@@ -1,18 +1,22 @@
 import React, {FC, useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
-import {useAppDispatch, useAppSelector} from '../../hooks';
+import {useAppSelector, useCacheServer} from '../../hooks';
 import IngredientDetails from '../../components/ingredient-details';
 import {IngredientItemProps} from '../../utils/props';
-import {fetchData} from '../../services/redux/server-slice';
 import AppLoader from '../../common/app-loader';
 import AppContent from '../../common/app-content';
 import EmptyData from '../../common/empty-data';
 
+/**
+ * Отдельная страница ингредиента
+ */
 const Ingredient: FC = () => {
   const {id} = useParams();
-  const dispatch = useAppDispatch();
   const serverStore = useAppSelector(state => state.server);
   const [data, setData] = useState<IngredientItemProps|null>(null);
+
+  // load ingredients from cache/api
+  useCacheServer(serverStore);
 
   useEffect(() => {
     if (id && serverStore.success && serverStore.data.length) {
@@ -22,13 +26,6 @@ const Ingredient: FC = () => {
       }
     }
   }, [id, serverStore.success, serverStore.data]);
-
-  // load ingredients from api
-  useEffect(() => {
-    if (serverStore.status === 'idle' && !serverStore.success) {
-      dispatch(fetchData(null));
-    }
-  }, [dispatch, serverStore.status, serverStore.success]);
 
   return (
     <AppContent layout={'center'}>

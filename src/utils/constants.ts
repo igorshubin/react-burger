@@ -1,5 +1,4 @@
 
-
 export const API_DEBUG = false;
 export const API_URL = 'https://norma.nomoreparties.space/api';
 export const API_ERRORS:{[key: number]: string} = {
@@ -8,6 +7,41 @@ export const API_ERRORS:{[key: number]: string} = {
   404: 'Страница не найдена.',
   500: 'Ошибка обработки запроса. Попробуйте еще раз чуть позже.',
 };
+
+
+export const WS_DEBUG = false;
+export const WS_DEBUG_MIDDLE = false;
+export const WS_URL = 'wss://norma.nomoreparties.space/orders';
+
+
+export const ORDER_STATUS:{
+  [key: string]: {
+    text: string,
+    text_multi: string,
+    color: string,
+  }
+} = {
+  done: {
+    text: 'Выполнен',
+    text_multi: 'Готовы',
+    color: '#00cccc',
+  },
+  pending: {
+    text: 'Готовится',
+    text_multi: 'В работе',
+    color: '#fff',
+  },
+  created: {
+    text: 'Новый',
+    text_multi: 'Новые',
+    color: '#8585AD',
+  },
+  canceled: {
+    text: 'Отменён',
+    text_multi: 'Отменены',
+    color: '#E52B1A',
+  },
+}
 
 
 export enum TOKENS {
@@ -26,7 +60,8 @@ export const TYPE_BUN = 'bun';
 export enum PAGES {
   constructor = '/',
   ingredientId = '/ingredients/:id',
-  list = '/list',
+  feed = '/feed',
+  feedOrder = '/feed/:number',
   login = '/login',
   register = '/register',
   forgotPassword = '/forgot-password',

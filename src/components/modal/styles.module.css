@@ -21,7 +21,7 @@
     left: 0;
     right: 0;
     margin: auto;
-    z-index: 10;
+    z-index: 100;
 }
 
 .modal--header {
@@ -30,6 +30,10 @@
     justify-content: space-between;
     margin-bottom: calc(var(--offset-base-size) * 3);
     min-height: 40px;
+}
+
+.modal--header svg {
+    cursor: pointer;
 }
 
 .modal--body {
