@@ -5,6 +5,9 @@ import {IngredientItemProps, IngredientDetailsProps} from '../../utils/props';
 import {isMobileDevice} from '../../utils/device';
 import {INGRSTATS} from '../../utils/constants';
 
+/**
+ * Информация ингредиента на отдельной странице + модалка
+ */
 const IngredientDetails: FC<IngredientDetailsProps> = ({data}) => {
   return (
     <div className={clsx(s['ingredient-details'], 'mb-5')}>

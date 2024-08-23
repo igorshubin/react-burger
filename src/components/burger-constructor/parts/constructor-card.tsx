@@ -78,7 +78,7 @@ const ConstructorCard: FC<ConstructorCardProps> = ({id, item, index, moveCard}) 
   const opacity = isDragging ? 0 : 1
   drag(drop(ref));
 
-  const handleDeleteElement = (id?:string) => dispatch(orderDeleteIngredient({id}));
+  const handleDeleteElement = (id?:string) => id && dispatch(orderDeleteIngredient(id));
 
   return (
     <div ref={ref} style={{ opacity }} data-handler-id={handlerId} key={id} className={clsx(s['constructor-list--item'], 'mb-4')}>

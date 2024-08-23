@@ -21,9 +21,10 @@ const AppHeader: FC = () => {
       case PAGES.ingredientId:
         setActive('constructor');
         break;
-      case PAGES.profileOrders:
+      case PAGES.feed:
         setActive('list')
         break;
+      case PAGES.profileOrders:
       case PAGES.profile:
         setActive('profile');
         break;
@@ -45,7 +46,7 @@ const AppHeader: FC = () => {
         </NavLink>
 
         <NavLink
-          to={auth? PAGES.profileOrders : PAGES.login}
+          to={PAGES.feed}
           className={clsx(s['app-header--link'], 'ml-2' , (active === 'list' && s['app-header--link_primary']))}
         >
           <ListIcon type={active === 'list'? 'primary' : 'secondary'}/>

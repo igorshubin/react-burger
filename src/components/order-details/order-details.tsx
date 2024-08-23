@@ -5,6 +5,9 @@ import orderIcon from '../../images/order-icon.svg';
 import {OrderDetailsProps} from '../../utils/props';
 import {isMobileDevice} from '../../utils/device';
 
+/**
+ * Модалка после успешного создания заказа
+ */
 const OrderDetails: FC<OrderDetailsProps> = ({orderId, orderName = null}) => {
   return (
     <div className={clsx(s['order-details'], 'mb-5')}>

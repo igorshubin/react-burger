@@ -1,14 +1,11 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {DataDefault} from './store';
+import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {ApiDataType, DataDefault} from './store';
 import {API_DEBUG, API_URL} from '../../utils/constants';
 import {checkResponse} from '../../utils/request';
+import {cacheServerData} from '../../utils';
+import {IngredientItemProps} from '../../utils/props';
 
-/**
- * https://redux.js.org/tutorials/essentials/part-5-async-logic
- * https://redux.js.org/usage/writing-logic-thunks
- * https://redux-toolkit.js.org/api/createAsyncThunk#handling-thunk-results
- */
-export const fetchData = createAsyncThunk('server/fetchData', async (data:any, thunkApi) => {
+export const fetchData = createAsyncThunk('server/fetchData', async (data:ApiDataType, thunkApi) => {
   return await fetch(`${API_URL}/ingredients`)
     .then((res) => checkResponse(res, thunkApi))
     .then(data => data);
@@ -18,6 +15,17 @@ export const serverSlice = createSlice({
   name: 'server',
   initialState: DataDefault.server,
   reducers: {
+    serverFromCache: (state, action: PayloadAction<IngredientItemProps[]>) => {
+      return {
+        ...state,
+        status: 'idle',
+        error: null,
+        success: true,
+        data: [
+          ...action.payload,
+        ],
+      };
+    },
   },
   extraReducers(builder) {
     builder
@@ -34,6 +42,8 @@ export const serverSlice = createSlice({
         if (action?.payload?.data) {
           state.success = true;
           state.data = action.payload.data;
+
+          cacheServerData(action.payload.data);
         }
       })
       .addCase(fetchData.rejected, (state, action) => {
@@ -49,3 +59,5 @@ export const serverSlice = createSlice({
 });
 
 export default serverSlice.reducer;
+
+export const {serverFromCache} = serverSlice.actions;

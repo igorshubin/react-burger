@@ -27,7 +27,7 @@
     /*box-shadow: 0 1px 0 0 var(--text-inactive-color);*/
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1024px) {
     .profile-menu {
         margin-bottom: calc(var(--offset-base-size) * 6);
     }

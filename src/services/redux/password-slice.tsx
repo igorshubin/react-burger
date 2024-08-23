@@ -1,15 +1,10 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {DataDefault} from './store';
+import {DataDefault, ApiDataType} from './store';
 import {API_DEBUG} from '../../utils/constants';
 import {apiRequest} from '../../utils/request';
 
-/**
- * https://redux.js.org/tutorials/essentials/part-5-async-logic
- * https://redux.js.org/usage/writing-logic-thunks
- * https://redux-toolkit.js.org/api/createAsyncThunk#handling-thunk-results
- */
 const passwordApiPrefix = 'password/api';
-export const passwordApi = createAsyncThunk(passwordApiPrefix, async (data:any, thunkApi) => apiRequest(data, thunkApi, passwordApiPrefix));
+export const passwordApi = createAsyncThunk(passwordApiPrefix, async (data:ApiDataType, thunkApi) => apiRequest(data, thunkApi, passwordApiPrefix));
 
 export const passwordSlice = createSlice({
   name: 'password',

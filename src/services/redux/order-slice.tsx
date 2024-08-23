@@ -1,33 +1,29 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {DataDefault} from './store';
+import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {DataDefault, ApiDataType} from './store';
 import {API_DEBUG} from '../../utils/constants';
 import {apiRequest} from '../../utils/request';
+import {IngredientItemProps} from '../../utils/props';
 
-/**
- * https://redux.js.org/tutorials/essentials/part-5-async-logic
- * https://redux.js.org/usage/writing-logic-thunks
- * https://redux-toolkit.js.org/api/createAsyncThunk#handling-thunk-results
- */
 const orderApiPrefix = 'order/api';
-export const orderApi = createAsyncThunk(orderApiPrefix, async (data:any, thunkApi) => apiRequest(data, thunkApi, orderApiPrefix));
+export const orderApi = createAsyncThunk(orderApiPrefix, async (data:ApiDataType, thunkApi) => apiRequest(data, thunkApi, orderApiPrefix));
 
 export const orderSlice = createSlice({
   name: 'order',
   initialState: DataDefault.order,
   reducers: {
-    orderAddBun: (state, action) => {
+    orderAddBun: (state, action: PayloadAction<IngredientItemProps>) => {
       state.bun = action.payload;
     },
 
-    orderAddIngredient: (state, action) => {
+    orderAddIngredient: (state, action: PayloadAction<IngredientItemProps>) => {
       state.ingredients.push(action.payload);
     },
-    orderDeleteIngredient: (state, action) => {
-      const list = state.ingredients.filter((item) => item.id !== action.payload.id);
+    orderDeleteIngredient: (state, action: PayloadAction<string>) => {
+      const list = state.ingredients.filter((item) => item.id !== action.payload);
       state.ingredients = list.length? [...list] : [];
     },
 
-    orderError: (state, action) => {
+    orderError: (state, action: PayloadAction<any>) => {
       state.error = action.payload;
     },
     orderErrorClear: (state) => {

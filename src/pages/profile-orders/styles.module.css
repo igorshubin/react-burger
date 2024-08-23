@@ -19,23 +19,31 @@
     opacity: 0.4;
 }
 
-.profile-form {
-    width: 480px;
-    text-align: center;
+.profile-data {
+    width: 100%;
+    max-width: 844px;
+    max-height: 85vh;
+    overflow: auto;
+    scrollbar-width: thin;
 }
 
-@media (max-width: 767px) {
+.profile-data--empty {
+    color: var(--text-inactive-color);
+    font-size: 12px;
+}
+
+@media (max-width: 1024px) {
     .profile {
         border-top: 1px solid var(--text-primary-color);
         margin-top: calc(var(--offset-base-size) * 4);
-        padding: calc(var(--offset-base-size) * 4);
         flex-flow: column;
     }
 
-    .profile-form,
+    .profile-data,
     .profile-left {
         width: 100%;
         padding: 0;
+        max-height: 100%;
     }
 
     .profile-left {

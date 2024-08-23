@@ -1,18 +1,13 @@
 import {Navigate, Outlet} from 'react-router-dom';
-import {useAppDispatch, useAppSelector} from '../../hooks';
-import {FC, useEffect, useState} from 'react';
-import {ls} from '../../utils';
-import {API_DEBUG, API_URL, PAGES, TOKENS} from '../../utils/constants';
-import {userUpdate} from '../../services/redux/user-slice';
-import {fetchWithRefresh} from '../../utils/request';
-import {ProtectedRouteProps, StatusTypes, TServerResponse} from '../../utils/props';
+import {useAppSelector, useAuthValidate} from '../../hooks';
+import {FC, useState} from 'react';
+import {PAGES} from '../../utils/constants';
+import {ProtectedRouteProps, StatusTypes} from '../../utils/props';
 import AppLoader from '../../common/app-loader';
 import {shallowEqual} from 'react-redux';
 import {getOrderError} from '../../utils/order';
-import {UserProps} from '../../services/redux/store';
 
 const ProtectedRoutes: FC<ProtectedRouteProps> = ({type}) => {
-  const dispatch = useAppDispatch();
   const {userStore, orderStore} = useAppSelector(
     state => ({
       userStore: state.user,
@@ -24,51 +19,7 @@ const ProtectedRoutes: FC<ProtectedRouteProps> = ({type}) => {
   const [status, setStatus] = useState<StatusTypes>(userStore.auth? 'idle' : 'loading');
 
   // check & validate user auth
-  useEffect(() => {
-    (async () => {
-      if (!userStore.auth) {
-        const accessToken = userStore[TOKENS.access] || ls(TOKENS.access);
-        const refreshToken = ls(TOKENS.refresh);
-
-        if (accessToken && refreshToken) {
-          const res = await fetchWithRefresh<TServerResponse<UserProps>>(`${API_URL}/auth/user`,
-  {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': accessToken,
-            }
-          },
-          ).catch((e:Error) => {
-            setStatus('idle');
-            if (API_DEBUG) {
-              console.log('refreshError', e);
-            }
-
-            // clear invalid tokens from ls
-            ls(TOKENS.access, null);
-            ls(TOKENS.refresh, null);
-          });
-
-          if (res.success) {
-            setStatus('idle');
-            dispatch(userUpdate({
-              auth: true,
-              api: res.user,
-              [TOKENS.access]: ls(TOKENS.access),
-              [TOKENS.refresh]: ls(TOKENS.refresh),
-            }));
-          }
-
-          if (API_DEBUG) {
-            console.log('ProtectedGuest:res', res);
-          }
-        } else {
-          setStatus('idle');
-        }
-      }
-    })();
-  }, [dispatch, userStore]);
+  useAuthValidate(userStore, setStatus);
 
   return (
     <>

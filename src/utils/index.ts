@@ -15,6 +15,31 @@ export const ls = (key:string, val?: string|null) => {
   }
 }
 
+// cache ingredients list from server
+export const cacheServerData = (data:any = null) => {
+  const key = 'burgerData';
+
+  // save cache
+  if (data && Array.isArray(data) && data.length) {
+    sessionStorage.setItem(key, JSON.stringify(data));
+    return;
+  }
+
+  // get cache
+  let burgerData = null;
+  if (sessionStorage[key]) {
+    try {
+      burgerData = JSON.parse(sessionStorage[key]);
+      if (!burgerData || !Array.isArray(burgerData) || !burgerData.length) {
+        burgerData = null;
+      }
+    } catch (e) {
+      //console.warn('cacheServerData', e);
+    }
+  }
+
+  return burgerData;
+}
 
 /**
  * Get changed list from userStore.api which values not equal to values in userStore.data,
