@@ -27,7 +27,7 @@ const Register: FC = () => {
   }, []);
 
   return (
-    <AppContent layout={'center'}>
+    <AppContent layout={'center'} testId={'register'}>
 
       <div className={s['auth']}>
         <div className={'text_type_main-medium mb-6'}>

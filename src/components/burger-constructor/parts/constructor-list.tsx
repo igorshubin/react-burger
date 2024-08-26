@@ -70,7 +70,7 @@ const ConstructorList: FC<ConstructorListProps> = ({bun, ingredients}) => {
   );
 
   return (
-    <div ref={dropTarget} className={clsx(s['constructor-list'], (isOver && s['constructor-list_drag-over']))}>
+    <div data-testid="burger-constructor-list" ref={dropTarget} className={clsx(s['constructor-list'], (isOver && s['constructor-list_drag-over']))}>
     {
       <div className={clsx(s['constructor-list--item'], s['constructor-list--top'], 'mb-4', 'ml-8', 'pl-4')}>
         {

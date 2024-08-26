@@ -1,5 +1,8 @@
 
-# GIT
+# PRODUCTION URL
+https://igorshubin.github.io/react-burger/
+
+# GIT URL
 https://github.com/igorshubin/react-burger.git
 
 # Getting Started with Create React App

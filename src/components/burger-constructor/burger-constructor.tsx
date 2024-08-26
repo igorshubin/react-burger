@@ -15,7 +15,7 @@ const BurgerConstructor: FC = () => {
   }, [orderStore.bun, orderStore.ingredients, orderStore.ingredients.length]);
 
   return(
-    <section className={clsx(s['bc'], 'ml-10', 'mt-25')}>
+    <section data-testid="burger-constructor" className={clsx(s['bc'], 'ml-10', 'mt-25')}>
       {
           <>
             <ConstructorList {...orderStore}/>

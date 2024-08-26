@@ -21,7 +21,7 @@ const ButtonLoader: FC<ButtonLoaderProps> = ({
   }
 
   return (
-    <Button disabled={disabled} onClick={handleClick} htmlType={type} extraClass={s['button-loader']}>
+    <Button data-testid='button-submit' disabled={disabled} onClick={handleClick} htmlType={type} extraClass={s['button-loader']}>
       {status === 'loading' ? (
         <>
           <span className={s['button-content-spinner']} />

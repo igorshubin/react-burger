@@ -44,15 +44,15 @@ const Modal: FC<ModalProps> = ({children, onClose, onOpen}): ReactPortal|null =>
 
   return popupShow? createPortal(
           <>
-            <div className={clsx(s['modal'], 'p-10')}>
-              <div className={clsx(s['modal--header'], 'text', 'text_type_main-large')}>
+            <div data-testid='modal' className={clsx(s['modal'], 'p-10')}>
+              <div data-testid='modal-header' className={clsx(s['modal--header'], 'text', 'text_type_main-large')}>
                 <span>
                   {popupTitle}
                 </span>
                 <CloseIcon type={'primary'} onClick={modalClose}/>
               </div>
 
-              <div className={s['modal--body']}>
+              <div data-testid='modal-body' className={s['modal--body']}>
                 {children}
               </div>
             </div>

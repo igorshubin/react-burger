@@ -12,7 +12,7 @@ const OrderDetails: FC<OrderDetailsProps> = ({orderId, orderName = null}) => {
   return (
     <div className={clsx(s['order-details'], 'mb-5')}>
 
-      <div title={orderName ?? ''} className={clsx(s['order-details--id'], 'text', 'text_type_digits-large', 'mb-8', 'mt-5')}>
+      <div data-testid="order-number" title={orderName ?? ''} className={clsx(s['order-details--id'], 'text', 'text_type_digits-large', 'mb-8', 'mt-5')}>
         {orderId}
       </div>
 

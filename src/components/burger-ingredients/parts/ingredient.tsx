@@ -24,7 +24,7 @@ const Ingredient: FC<IngredientProps> = ({
   const location = useLocation();
 
   return (
-      <div ref={dragRef} style={{ opacity }} onClick={onClick} className={clsx(s['ingredient'], 'mb-8')}>
+      <div data-testgroup='ingredient' data-testid={`ingredient-${data.type}`} ref={dragRef} style={{ opacity }} onClick={onClick} className={clsx(s['ingredient'], 'mb-8')}>
         {count ? <Counter count={count} extraClass={s['ingredient--count']}/> : ''}
 
         <Link

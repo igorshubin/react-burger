@@ -31,7 +31,7 @@ const Profile: FC = () => {
   };
 
   return (
-    <AppContent layout={'profile'}>
+    <AppContent layout={'profile'} testId={'profile'}>
 
       <div className={clsx(s['profile'], 'mt-10')}>
         <section className={clsx(s['profile-left'], 'mr-15')}>

@@ -55,7 +55,7 @@ const Feeds: FC = () => {
   }
 
   return (
-    <AppContent layout={'feed'}>
+    <AppContent layout={'feed'} testId={'feed'}>
 
       <FeedHeader feedStore={feedStore} countValidOrders={orders.length}/>
 

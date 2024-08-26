@@ -1,11 +1,10 @@
 import {API_DEBUG, API_ERRORS, API_URL, TOKENS} from './constants';
 import {GetThunkAPI} from '@reduxjs/toolkit';
-import {AsyncThunkConfig} from '@reduxjs/toolkit/dist/createAsyncThunk';
 import {ls} from "./index";
 import {ObjStrStrType, RequestErrorProps, TRefreshResponse} from './props';
 import {ApiDataType} from '../services/redux/store';
 
-export const apiRequest = async (data:ApiDataType, thunkApi:GetThunkAPI<AsyncThunkConfig>, apiPrefix: string) => {
+export const apiRequest = async (data:ApiDataType, thunkApi:GetThunkAPI<any>, apiPrefix: string) => {
   if (API_DEBUG) {
     console.group('apiRequest')
     console.log('apiPrefix', apiPrefix);
@@ -49,7 +48,7 @@ export const apiRequest = async (data:ApiDataType, thunkApi:GetThunkAPI<AsyncThu
 
 
 /* REQUESTS */
-export const checkResponse = (res:Response, thunkApi:GetThunkAPI<AsyncThunkConfig>) => {
+export const checkResponse = (res:Response, thunkApi:GetThunkAPI<any>) => {
   if (API_DEBUG) {
     console.log('checkResponse', res);
   }

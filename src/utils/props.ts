@@ -12,6 +12,7 @@ export interface AppLoaderProps {
 export interface AppContentProps {
   children: ReactNode,
   layout?: 'default'|'center'|'profile'|'feed',
+  testId?: string,
 }
 
 export interface ButtonLoaderProps {

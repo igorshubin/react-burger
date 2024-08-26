@@ -45,7 +45,7 @@ const Order: FC = () => {
   }, [ordersListStore.orders, serverStore.data]);
 
   return (
-    <AppContent layout={'center'}>
+    <AppContent layout={'center'} testId={'order'}>
       <AppLoader status={serverStore.status}/>
 
       {order && <ProfileOrderDetails order={order}/>}

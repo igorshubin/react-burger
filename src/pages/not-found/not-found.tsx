@@ -4,7 +4,7 @@ import EmptyData from '../../common/empty-data';
 
 const NotFound: FC = () => {
   return (
-    <AppContent layout={'center'}>
+    <AppContent layout={'center'} testId={'not-found'}>
 
       <EmptyData title={'Страница не найдена'}/>
 
