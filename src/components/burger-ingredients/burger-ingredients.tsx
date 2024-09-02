@@ -23,7 +23,6 @@ const BurgerIngredients: FC = () => {
   const [activeTab, setActiveTab] = useState<string>(TYPE_BUN);
   const [counts, setCounts] = useState<ObjStrNumType>({});
 
-  //TODO: const refs = useRef<{[key: string]: RefObject<HTMLDivElement>}>({});
   const refs = useRef<any>({});
 
   useEffect(() => setCounts(getOrderCounts(orderStore)), [orderStore]);
@@ -57,7 +56,7 @@ const BurgerIngredients: FC = () => {
   };
 
   return(
-    <section className={clsx(s['bi'], 'pt-10')}>
+    <section data-testid="burger-ingredients" className={clsx(s['bi'], 'pt-10')}>
 
       <div className={clsx(s['bi--title'], 'text', 'text_type_main-large', 'mb-5')}>
         Соберите бургер

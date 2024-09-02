@@ -28,7 +28,7 @@ const Ingredient: FC = () => {
   }, [id, serverStore.success, serverStore.data]);
 
   return (
-    <AppContent layout={'center'}>
+    <AppContent layout={'center'} testId={'ingredient'}>
       <AppLoader status={serverStore.status}/>
 
       {data && <IngredientDetails data={data}/>}

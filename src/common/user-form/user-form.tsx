@@ -107,27 +107,27 @@ const UserForm: FC<UserFormProps> = ({variant, onSubmit, buttonText}) => {
 
 
   return (
-    <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => onSubmit(e)} method={'post'} className={s['user-form']}>
+    <form data-testid={`auth-form-${variant}`}  onSubmit={(e: React.FormEvent<HTMLFormElement>) => onSubmit(e)} method={'post'} className={s['user-form']}>
 
       {/*INPUTS*/}
       {['register', 'profile'].includes(variant) &&
         // @ts-ignore
-        <Input icon={userStore.auth && 'EditIcon'} extraClass={'mb-6'} placeholder={'Имя'} value={data.name ?? ''} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, 'name')}/>
+        <Input data-testid="auth-input-name" icon={userStore.auth && 'EditIcon'} extraClass={'mb-6'} placeholder={'Имя'} value={data.name ?? ''} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, 'name')}/>
       }
-      <EmailInput isIcon={userStore.auth} extraClass={'mb-6'} placeholder={userStore.auth? 'Логин' : 'E-mail'} value={data.email ?? ''} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, 'email')}/>
-      <PasswordInput extraClass={'mb-6'} placeholder={'Пароль'} value={data.password ?? ''} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, 'password')}/>
+      <EmailInput data-testid="auth-input-email" isIcon={userStore.auth} extraClass={'mb-6'} placeholder={userStore.auth? 'Логин' : 'E-mail'} value={data.email ?? ''} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, 'email')}/>
+      <PasswordInput data-testid="auth-input-password" extraClass={'mb-6'} placeholder={'Пароль'} value={data.password ?? ''} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, 'password')}/>
 
 
       {/*ERROR*/}
       {errorText &&
-        <div className="text_color_error text_type_main-small mb-4">
+        <div data-testid="auth-error" className="text_color_error text_type_main-small mb-4">
           {errorText}
         </div>
       }
 
       {/*SUCCESS*/}
       {userStore.successText &&
-        <div className="text_color_success text_type_main-small mb-4">
+        <div data-testid="auth-success" className="text_color_success text_type_main-small mb-4">
           {userStore.successText}
         </div>
       }

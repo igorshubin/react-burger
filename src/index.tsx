@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {Provider} from 'react-redux';
 import {store} from './services/redux';
-import {BrowserRouter as Router} from 'react-router-dom';
+import {BrowserRouter, HashRouter} from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
 import ErrorBoundary from './components/error-boundary/error-boundary';
 import App from './components/app';
@@ -16,15 +16,17 @@ import './index.css';
  * CSS: https://yandex-practicum.github.io/react-developer-burger-ui-components/docs/
  */
 
+const isLocalhost = ['127.0.0.1', 'localhost'].includes(window.location.hostname);
+
 ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 ).render(
   /*<React.StrictMode>*/
     <ErrorBoundary>
       <Provider store={store}>
-        <Router>
-          <App />
-        </Router>
+        {
+          isLocalhost ? <BrowserRouter><App /></BrowserRouter> : <HashRouter><App /></HashRouter>
+        }
       </Provider>
     </ErrorBoundary>
   /*</React.StrictMode>*/

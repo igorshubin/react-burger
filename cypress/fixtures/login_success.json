@@ -1,0 +1,9 @@
+{
+  "success": true,
+  "accessToken": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2OGQ5MWM4MTE5ZDQ1MDAxYjRmNzViMCIsImlhdCI6MTcyNDgzNTQyMiwiZXhwIjoxNzI0ODM2NjIyfQ.AYKxpSlB6f_M1bWNP0M9MMhBZY8rgJzYpyUpMD71D7U",
+  "refreshToken": "04f6efecc547d66f5c18a3fd9ebc9123ff56212cb68db22d91ee2c0139e56b14b2ac62d30cc6af6b",
+  "user": {
+    "email": "ishubin77@gmail.com",
+    "name": "Igor Ivanov"
+  }
+}

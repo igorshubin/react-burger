@@ -1,0 +1,14 @@
+
+.link-list {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+.link-list a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+.link-list svg {
+    transform: rotate(90deg);
+}

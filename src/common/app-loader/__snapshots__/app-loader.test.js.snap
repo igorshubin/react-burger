@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Loader status: [error] 1`] = `
+<div
+  className="app-error"
+>
+  Ошибка получения данных!
+  <button
+    className="button button_type_secondary button_size_medium"
+    onClick={[Function]}
+    type="reset"
+  >
+    Перегрузить страницу
+  </button>
+</div>
+`;
+
+exports[`Loader status: [idle] 1`] = `null`;
+
+exports[`Loader status: [loading] 1`] = `
+<div
+  className="app-loading"
+>
+  Загружаем данные...
+</div>
+`;

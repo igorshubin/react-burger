@@ -82,20 +82,6 @@
     margin-left: auto;
 }
 
-.profile-order-details--linkback {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-}
-.profile-order-details--linkback a {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-}
-.profile-order-details--linkback svg {
-    transform: rotate(90deg);
-}
-
 @media (max-width: 767px) {
     .profile-order-details {
         max-width: 90%;

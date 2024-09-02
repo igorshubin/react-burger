@@ -44,7 +44,7 @@ const ForgotPassword: FC = () => {
     passwordStore.forgot? (
       <Navigate to={PAGES.resetPassword} />
     ) : (
-      <AppContent layout={'center'}>
+      <AppContent layout={'center'} testId={'forgot-password'}>
 
         <div className={s['auth']}>
           <div className={'text_type_main-medium mb-6'}>

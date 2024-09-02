@@ -39,6 +39,7 @@ const AppHeader: FC = () => {
       <div className={s['app-header--info']}>
         <NavLink
           to={PAGES.constructor}
+          data-testid='header-index'
           className={clsx(s['app-header--link'], (active === 'constructor' && s['app-header--link_primary']))}
         >
           <BurgerIcon type={active === 'constructor'? 'primary' : 'secondary'} />
@@ -47,6 +48,7 @@ const AppHeader: FC = () => {
 
         <NavLink
           to={PAGES.feed}
+          data-testid='header-feed'
           className={clsx(s['app-header--link'], 'ml-2' , (active === 'list' && s['app-header--link_primary']))}
         >
           <ListIcon type={active === 'list'? 'primary' : 'secondary'}/>
@@ -61,6 +63,7 @@ const AppHeader: FC = () => {
       <div className={s['app-header--auth']}>
         <NavLink
           to={auth? PAGES.profile : PAGES.login}
+          data-testid='header-auth'
           className={clsx(s['app-header--link'], (auth && s[`app-header--link_auth`]), (active === 'profile' && s['app-header--link_primary']))}
         >
           <ProfileIcon type={active === 'profile'? 'primary' : 'secondary'} />

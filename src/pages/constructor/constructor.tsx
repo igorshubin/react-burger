@@ -25,7 +25,7 @@ const Constructor: FC = () => {
   useAuthValidate(userStore);
 
   return (
-    <AppContent>
+    <AppContent testId={'constructor'}>
 
       <AppLoader status={serverStore.status}/>
 

@@ -4,11 +4,15 @@ import clsx from 'clsx';
 import {IngredientItemProps, IngredientDetailsProps} from '../../utils/props';
 import {isMobileDevice} from '../../utils/device';
 import {INGRSTATS} from '../../utils/constants';
+import LinkList from '../../common/link-list';
+import {useAppSelector} from '../../hooks';
 
 /**
  * Информация ингредиента на отдельной странице + модалка
  */
 const IngredientDetails: FC<IngredientDetailsProps> = ({data}) => {
+  const {show: popupShow} = useAppSelector(state => state.popup);
+
   return (
     <div className={clsx(s['ingredient-details'], 'mb-5')}>
       <div className={clsx(s['ingredient-details--image'], 'mb-1', 'mb-4')}>
@@ -30,6 +34,10 @@ const IngredientDetails: FC<IngredientDetailsProps> = ({data}) => {
           })
         }
       </div>
+
+      {/*LINK BACK (when not in popup)*/}
+      {!popupShow && <LinkList linkBack={'/'} />}
+
     </div>
   );
 };

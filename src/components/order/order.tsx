@@ -107,7 +107,7 @@ const Order: FC<OrderProps> = ({total}) => {
               idle: 'Оформить заказ',
             }} />
         ) : (
-          <Button onClick={loginOrder} htmlType={'submit'}>
+          <Button disabled={Boolean(getOrderError(orderStore))} onClick={loginOrder} htmlType={'submit'}>
             Оформить заказ
           </Button>
         )}

@@ -47,9 +47,11 @@ const App: FC = () => {
       <AppHeader />
 
       <Routes location={state?.backgroundLocation || location}>
+        {/*HOME PAGE*/}
+        {[PAGES.constructor, PAGES.home].map((path, key) => <Route key={key} path={path} element={<Constructor />} />)}
+
         {/*ITEMS*/}
         <Route path={PAGES.ingredientId} element={<Ingredient />} />
-        <Route path={PAGES.constructor} element={<Constructor />} />
         <Route path={PAGES.feed} element={<Feed />} />
         <Route path={PAGES.feedOrder} element={<Order />} />
 

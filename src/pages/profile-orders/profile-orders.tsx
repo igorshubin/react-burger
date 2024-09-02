@@ -66,7 +66,7 @@ const ProfileOrders: FC = () => {
   }
 
   return (
-    <AppContent layout={'profile'}>
+    <AppContent layout={'profile'} testId={'profile-orders'}>
 
       <div className={clsx(s['profile'], 'mt-10')}>
         <section className={clsx(s['profile-left'], 'mr-15')}>

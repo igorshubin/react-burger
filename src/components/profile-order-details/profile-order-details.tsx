@@ -2,11 +2,12 @@ import React, {FC, useEffect, useState} from 'react';
 import s from './styles.module.css';
 import clsx from 'clsx';
 import {IngredientItemProps, ProfileOrderDetailsItemsProps, ProfileOrderDetailsProps} from '../../utils/props';
-import {ArrowUpIcon, CurrencyIcon, FormattedDate} from '@ya.praktikum/react-developer-burger-ui-components';
+import {CurrencyIcon, FormattedDate} from '@ya.praktikum/react-developer-burger-ui-components';
 import {getOrderTotal} from '../../utils/order';
 import {ORDER_STATUS, PAGES, TYPE_BUN} from '../../utils/constants';
-import {Link, useMatch} from 'react-router-dom';
+import {useMatch} from 'react-router-dom';
 import {useAppSelector} from '../../hooks';
+import LinkList from '../../common/link-list';
 
 /**
  * Информация заказа на отдельной странице + модалка
@@ -100,14 +101,7 @@ const ProfileOrderDetails: FC<ProfileOrderDetailsProps> = ({order}) => {
       </div>
 
       {/*LINK BACK (when not in popup)*/}
-      {!popupShow &&
-        <div className={clsx(s['profile-order-details--linkback'], 'mt-10')}>
-            <Link to={linkBack} className={'text_type_main-small text_color_inactive'}>
-                <span>Список</span>
-                <ArrowUpIcon type={'secondary'}/>
-            </Link>
-        </div>
-      }
+      {!popupShow && <LinkList linkBack={linkBack} />}
 
     </div>
   );

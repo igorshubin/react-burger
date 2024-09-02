@@ -26,7 +26,7 @@ const Login: FC = () => {
   }, []);
 
   return (
-    <AppContent layout={'center'}>
+    <AppContent layout={'center'} testId={'login'}>
 
       <div className={s['auth']}>
         <div className={'text_type_main-medium mb-6'}>

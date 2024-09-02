@@ -58,6 +58,7 @@ export const TYPESORT = 'sortable';
 export const TYPE_BUN = 'bun';
 
 export enum PAGES {
+  home = '/react-burger',
   constructor = '/',
   ingredientId = '/ingredients/:id',
   feed = '/feed',

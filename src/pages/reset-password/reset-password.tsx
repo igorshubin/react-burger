@@ -82,7 +82,7 @@ const ResetPassword: FC = () => {
 
   return (
     passwordStore.forgot? (
-      <AppContent layout={'center'}>
+      <AppContent layout={'center'} testId={'reset-password'}>
 
         <div className={s['auth']}>
           <div className={'text_type_main-medium mb-6'}>
